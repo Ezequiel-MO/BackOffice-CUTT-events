@@ -5,8 +5,8 @@ describe("logo-image", () => {
 });
 
 describe("button", () => {
-  it("on click, it should open Create Project- projectSpecs", () => {});
-  it("while projectSpecs is open, button should be disabled", () => {});
+  it("v- on click, it should open Create Project- projectSpecs", () => {});
+  it("v- while projectSpecs is open, button should be disabled", () => {});
   it("when project is created, button text should show the active code", () => {});
 });
 

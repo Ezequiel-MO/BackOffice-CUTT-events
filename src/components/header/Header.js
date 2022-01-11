@@ -2,13 +2,18 @@ import logo from "../../assets/logo-dark.svg";
 import { Icon } from "@iconify/react";
 import styles from "./Header.module.css";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { ProjectSpecs } from "../../pages/projectConfig";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectProjectStatus,
+  SET_PROJECT_STATUS,
+} from "../../features/ProjectStatusSlice";
+import ProjectModal from "../projectModal/ProjectModal";
 
 const Header = () => {
-  const [projectStatus, setProjectStatus] = useState("initial");
+  const dispatch_projectStatus = useDispatch();
+  const projectStatus = useSelector(selectProjectStatus);
   const handleOpenModalClick = () => {
-    setProjectStatus("creating-project");
+    dispatch_projectStatus(SET_PROJECT_STATUS("searching-project"));
   };
 
   return (
@@ -20,11 +25,13 @@ const Header = () => {
           </Link>
           <button
             onClick={handleOpenModalClick}
-            disabled={projectStatus === "creating-project"}
+            disabled={projectStatus === "searching-project"}
           >
             {projectStatus === "initial"
               ? "Create Project"
-              : "Creating project"}
+              : projectStatus === "searching-project"
+              ? "Searching Project"
+              : "Creating Project"}
           </button>
         </div>
         <div className={styles.header__right}>
@@ -33,7 +40,7 @@ const Header = () => {
           </Link>
         </div>
       </div>
-      {projectStatus === "creating-project" && <ProjectSpecs />}
+      {projectStatus === "searching-project" && <ProjectModal />}
     </>
   );
 };
