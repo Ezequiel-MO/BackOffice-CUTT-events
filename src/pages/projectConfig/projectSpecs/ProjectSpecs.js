@@ -1,10 +1,36 @@
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 import { TextInput } from "../../../ui/TextInput";
 import { SaveButton } from "../../../ui/Button/SaveButton";
+import { checkCodeIsUnique } from "../../../helper/HelperFunctions/HelperFunctions";
+import { useAxiosFetch } from "../../../hooks/useAxiosFetch";
+import { baseURL, baseAPI } from "../../../helper/axios.js";
+import { useDispatch } from "react-redux";
+import { SET_PROJECT_STATUS } from "../../../features/ProjectStatusSlice";
 import "./styles.css";
 
 export const ProjectSpecs = () => {
+  const dispatch_ProjectStatus = useDispatch();
+  const navigate = useNavigate();
+  const {
+    data: { projects: DBprojects },
+  } = useAxiosFetch(`${baseURL}/projects`);
+
+  const PostProject = (project) => {
+    console.log("project", project);
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(project)) {
+      formData.append(key, value);
+    }
+    baseAPI
+      .post("/projects", formData)
+      .then((res) => console.log("res=>", res))
+      .catch((err) => console.log(err));
+    dispatch_ProjectStatus(SET_PROJECT_STATUS(project["code"]));
+    navigate("/hotels");
+  };
+
   return (
     <>
       <Formik
@@ -18,11 +44,15 @@ export const ProjectSpecs = () => {
           nrPax: 0,
           clientCo: "",
           clientAccManager: "",
-          hotels: [],
-          schedule: [],
         }}
         onSubmit={(values) => {
           console.log("values=>", values);
+          let codeIsUnique = checkCodeIsUnique(values.code, DBprojects);
+          if (codeIsUnique) {
+            PostProject(values);
+          } else {
+            alert("This code is already in use");
+          }
         }}
         validationSchema={Yup.object({
           code: Yup.string()

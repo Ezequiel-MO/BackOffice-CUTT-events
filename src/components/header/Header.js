@@ -31,7 +31,9 @@ const Header = () => {
               ? "Create Project"
               : projectStatus === "searching-project"
               ? "Searching Project"
-              : "Creating Project"}
+              : projectStatus === "creating-project"
+              ? "Creating Project"
+              : `${projectStatus}`}
           </button>
         </div>
         <div className={styles.header__right}>
