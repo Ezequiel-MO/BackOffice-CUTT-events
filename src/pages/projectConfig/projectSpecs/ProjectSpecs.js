@@ -18,7 +18,6 @@ export const ProjectSpecs = () => {
   } = useAxiosFetch(`${baseURL}/projects`);
 
   const PostProject = (project) => {
-    console.log("project", project);
     const formData = new FormData();
     for (const [key, value] of Object.entries(project)) {
       formData.append(key, value);
