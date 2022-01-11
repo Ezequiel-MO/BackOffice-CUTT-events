@@ -4,6 +4,10 @@ describe("table", () => {
   it("should be searchable by Code, User or Client", () => {});
 });
 
+describe("table + buttons", () => {
+  it("when clicked, it should show a briefing of the selected project", () => {});
+});
+
 describe("New Project Button", () => {
   it("v- should direct to the project-specs route", () => {});
   it("v- should close the modal when clicked", () => {});
