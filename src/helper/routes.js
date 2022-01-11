@@ -12,8 +12,14 @@ import {
   RestaurantsMasterForm,
   TransfersMasterForm,
 } from "../pages/masterForms";
+import Login from "../components/login/Login";
 
 export const routes = [
+  {
+    path: "/login",
+    Component: Login,
+    name: "login",
+  },
   {
     path: "/project-specs",
     Component: ProjectSpecs,
