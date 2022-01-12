@@ -72,3 +72,17 @@ export const PostToEndpoint = (data, endpoint) => {
     })
     .catch((err) => console.log("error", err));
 };
+
+export const submitForm = (values, files, endpoint, options) => {
+  const transformedValues = transformValues(values);
+  const dataToPost = fillFormData(transformedValues, files);
+  if (options) {
+    let hotelIsUnique = checkVendorIsUnique("name", values["name"], options);
+
+    if (hotelIsUnique) {
+      PostToEndpoint(dataToPost, endpoint);
+    } else {
+      alert(`${values["name"]} already exists in the DB`);
+    }
+  }
+};
