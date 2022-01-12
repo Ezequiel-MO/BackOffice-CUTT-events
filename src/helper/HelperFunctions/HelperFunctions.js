@@ -1,9 +1,10 @@
 import { baseAPI } from "../axios";
 
 export const checkForDuplicates = (string, array) => {
+  console.log("checkForDuplicates", string, array);
   let codeIsUnique = true;
   for (let i = 0; i < array.length; i++) {
-    if (array[i].toLowerCase() === string.toLowerCase()) {
+    if (array[i] === string) {
       codeIsUnique = false;
     }
   }
@@ -11,7 +12,7 @@ export const checkForDuplicates = (string, array) => {
 };
 
 export const checkCodeIsUnique = (code, array) => {
-  const codeArr = array?.map((project) => project.code);
+  const codeArr = array?.map((project) => project[code]);
   const codeIsUnique = checkForDuplicates(code, codeArr);
   return codeIsUnique;
 };
@@ -57,12 +58,17 @@ export const fillFormData = (values, files) => {
   return formData;
 };
 
+export const checkVendorIsUnique = (code, vendorName, array) => {
+  const codeArr = array?.map((project) => project[code]);
+  const codeIsUnique = checkForDuplicates(vendorName, codeArr);
+  return codeIsUnique;
+};
+
 export const PostToEndpoint = (data, endpoint) => {
   baseAPI
     .post(endpoint, data)
     .then((res) => {
       console.log("res", res);
-      return res.status;
     })
     .catch((err) => console.log("error", err));
 };

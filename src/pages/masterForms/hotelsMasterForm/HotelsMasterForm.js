@@ -8,15 +8,19 @@ import { CheckboxInput } from "../../../ui/inputs/CheckboxInput";
 import { TextAreaInput } from "../../../ui/inputs/TextAreaInput";
 import "../../masterForms/styles.css";
 import {
+  checkVendorIsUnique,
   fillFormData,
   PostToEndpoint,
   transformValues,
 } from "../../../helper/HelperFunctions/HelperFunctions";
 import { useNavigate } from "react-router-dom";
+import useGetVendors from "../../../hooks/useGetVendors";
 
 export const HotelsMasterForm = () => {
   const fileInput = useRef();
   const navigate = useNavigate();
+  const { vendorOptions: hotels } = useGetVendors("hotels");
+
   return (
     <>
       <Formik
@@ -43,8 +47,20 @@ export const HotelsMasterForm = () => {
             transformedValues,
             fileInput.current.files
           );
-          const status = PostToEndpoint(dataToPost, "hotels");
-          status === 201 && navigate("/");
+          if (hotels) {
+            let hotelIsUnique = checkVendorIsUnique(
+              "name",
+              values["name"],
+              hotels
+            );
+
+            if (hotelIsUnique) {
+              PostToEndpoint(dataToPost, "hotels");
+              navigate("/");
+            } else {
+              alert("Hotel with this name already exists");
+            }
+          }
         }}
         validationSchema={Yup.object({
           name: Yup.string().required("Required"),

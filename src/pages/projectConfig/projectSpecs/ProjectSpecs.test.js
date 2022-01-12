@@ -1,6 +1,7 @@
 describe("form", () => {
   it("v- should capture required fields", () => {});
   it("v- fields should be validated before rendering", () => {});
+  it("date fields must be validated - ie, check that start date is in the future, and departure day is after start date", () => {});
 });
 
 describe("submit", () => {
