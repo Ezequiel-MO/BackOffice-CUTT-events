@@ -1,6 +1,6 @@
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import { TextInput } from "../../../ui/TextInput";
+import { TextInput } from "../../../ui/inputs/TextInput";
 import SaveButton from "../../../ui/Button/SaveButton";
 
 const HotelRatesTable = ({ hotels }) => {

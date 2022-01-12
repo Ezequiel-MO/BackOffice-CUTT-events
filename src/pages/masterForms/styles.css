@@ -1,0 +1,94 @@
+.form {
+  display: flex;
+  align-items: center;
+}
+
+.form fieldset {
+  color: #ea5933;
+  border-radius: 10px;
+  padding: 0.5rem;
+}
+
+.form-inputs {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+label {
+  display: inline-block;
+  width: 200px;
+}
+
+.button {
+  margin-top: 2rem;
+}
+
+.hotel-button {
+  margin-left: 2rem;
+  margin-top: 0.7rem;
+}
+
+input,
+select {
+  margin-top: 5px;
+  outline: none;
+  padding: 10px;
+  width: 200px;
+}
+
+input[type="file"] {
+  display: none;
+}
+.custom-file-upload {
+  margin-left: 1rem;
+  margin-top: 0.6rem;
+  display: flex;
+  align-items: center;
+  display: inline-block;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.custom-file-upload span {
+  color: #ea5933;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.text-area-input-event {
+  margin-top: 5px;
+  margin-left: 1rem;
+  width: 550px;
+  height: 141px;
+}
+
+.text-area-input-restaurant {
+  margin-top: 5px;
+  margin-left: 1rem;
+  width: 550px;
+  height: 97px;
+}
+
+.text-area-input-hotel {
+  margin-top: 5px;
+  margin-left: 1rem;
+  width: 550px;
+  height: 160px;
+}
+
+.text-area-input-restaurant::placeholder,
+.text-area-input-event::placeholder,
+.text-area-input-hotel::placeholder {
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+span,
+.error-message {
+  color: red;
+}
+
+.has-error {
+  border: 1px solid red;
+}

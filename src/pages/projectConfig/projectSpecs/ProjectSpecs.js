@@ -1,7 +1,7 @@
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { TextInput } from "../../../ui/TextInput";
+import { TextInput } from "../../../ui/inputs/TextInput";
 import { SaveButton } from "../../../ui/Button/SaveButton";
 import { checkCodeIsUnique } from "../../../helper/HelperFunctions/HelperFunctions";
 import { useAxiosFetch } from "../../../hooks/useAxiosFetch";
