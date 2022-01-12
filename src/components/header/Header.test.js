@@ -2,6 +2,7 @@
 
 describe("logo-image", () => {
   it("v- should navigate to home page on click", () => {});
+  it("v-should set Project state to create-project", () => {});
 });
 
 describe("button", () => {

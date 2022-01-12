@@ -86,3 +86,31 @@ export const submitForm = (values, files, endpoint, options) => {
     }
   }
 };
+
+//ListOfProjects - SortableProjectsTable
+
+export const setSortOrder = (array, sortOrder) => {
+  if (sortOrder === "asc") {
+    const AscendingArray = [...array].sort((a, b) => {
+      let c = new Date(a.createdAt);
+      let d = new Date(b.createdAt);
+      return c - d;
+    });
+    return AscendingArray;
+  } else if (sortOrder === "desc") {
+    const DescendingArray = [...array].sort((a, b) => {
+      let c = new Date(a.createdAt);
+      let d = new Date(b.createdAt);
+      return d - c;
+    });
+    return DescendingArray;
+  } else return array;
+};
+
+export const getDate = (date) => {
+  const newDate = new Date(date);
+  const day = newDate.getDate();
+  const month = newDate.toLocaleString("default", { month: "short" });
+  const year = newDate.getFullYear();
+  return `${day}/${month}/${year}`;
+};

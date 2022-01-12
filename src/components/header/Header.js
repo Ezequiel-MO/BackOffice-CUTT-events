@@ -7,7 +7,7 @@ import {
   selectProjectStatus,
   SET_PROJECT_STATUS,
 } from "../../features/ProjectStatusSlice";
-import ProjectModal from "../projectModal/ProjectModal";
+import ListOfProjects from "../listOfProjects/ListOfProjects";
 
 const Header = () => {
   const dispatch_projectStatus = useDispatch();
@@ -16,12 +16,16 @@ const Header = () => {
     dispatch_projectStatus(SET_PROJECT_STATUS("searching-project"));
   };
 
+  const handleImageClick = () => {
+    dispatch_projectStatus(SET_PROJECT_STATUS("initial"));
+  };
+
   return (
     <>
       <div className={styles.header}>
         <div className={styles.header__left}>
           <Link to='/'>
-            <img src={logo} alt='logo' />
+            <img src={logo} alt='logo' onClick={handleImageClick} />
           </Link>
           <button
             onClick={handleOpenModalClick}
@@ -42,7 +46,7 @@ const Header = () => {
           </Link>
         </div>
       </div>
-      {projectStatus === "searching-project" && <ProjectModal />}
+      {projectStatus === "searching-project" && <ListOfProjects />}
     </>
   );
 };
