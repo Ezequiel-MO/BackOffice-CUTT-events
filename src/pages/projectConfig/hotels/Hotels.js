@@ -7,6 +7,7 @@ import eventOptionsReducer, {
 import { SaveButton } from "../../../ui/buttons/saveButton/SaveButton";
 import { findSelectedOptions } from "../../../helper/HelperFunctions/HelperFunctions";
 import HotelRatesTable from "../../../components/projectConfig/HotelRatesTable/HotelRatesTable";
+import styles from "../configStyles.module.css";
 
 export const Hotels = () => {
   const { vendorOptions: hotelOptions } = useGetVendors("hotels");
@@ -36,7 +37,7 @@ export const Hotels = () => {
     }
   };
   return (
-    <div>
+    <div className={styles.config__container}>
       <form onSubmit={handleFormSubmit}>
         <ProjectSelector
           name='hotel'
@@ -45,7 +46,9 @@ export const Hotels = () => {
           placeholder='ex : Hotel Options'
           storeSelectedValues={storeSelectedValues}
         />
-        <SaveButton text={"Add Hotels to project"} type='submit' />
+        <div className={styles.save__button}>
+          <SaveButton text={"Add Hotels to project"} type='submit' />
+        </div>
       </form>
       {hotels.length > 0 && <HotelRatesTable hotels={hotels} />}
     </div>

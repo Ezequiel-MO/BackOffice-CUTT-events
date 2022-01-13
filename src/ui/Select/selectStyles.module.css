@@ -1,0 +1,12 @@
+
+.select__container {
+    position: relative;
+    margin: 1rem;
+}
+
+.select__container > label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0.3rem;
+}

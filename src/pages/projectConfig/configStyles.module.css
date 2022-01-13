@@ -1,0 +1,16 @@
+.config__container {
+display: flex;
+flex-direction: column;
+}
+
+.config__container > form {
+margin-top: 2rem;
+display: flex;
+align-items: center;
+}
+
+
+
+.save__button > button {
+width: 400px;
+}
