@@ -1,21 +1,30 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import HotelRatesTable from "../../components/projectConfig/HotelRatesTable/HotelRatesTable";
+import { selectHotelRates } from "../../features/HotelRatesSlice";
+import { checkVendorIsUnique } from "../../helper/HelperFunctions/HelperFunctions";
 import "./tabStyles.css";
 
 const Tabs = ({ hotels }) => {
   const [visibleTab, setVisibleTab] = useState(hotels[0]._id);
-  console.log("hotels", hotels);
+  const hotelsArr = useSelector(selectHotelRates);
 
   const listTitles = hotels.map((hotel) => (
-    <li
-      key={hotel._id}
-      onClick={() => setVisibleTab(hotel._id)}
-      className={
-        visibleTab === hotel._id ? "tab-title tab-title--active" : "tab-title"
-      }
-    >
-      {hotel.name}
-    </li>
+    <>
+      {checkVendorIsUnique("_id", hotel._id, hotelsArr) && (
+        <li
+          key={hotel._id}
+          onClick={() => setVisibleTab(hotel._id)}
+          className={
+            visibleTab === hotel._id
+              ? "tab-title tab-title--active"
+              : "tab-title"
+          }
+        >
+          {hotel.name}
+        </li>
+      )}
+    </>
   ));
 
   const listContent = hotels.map((hotel) => (
@@ -23,7 +32,9 @@ const Tabs = ({ hotels }) => {
       key={hotel._id}
       style={visibleTab === hotel._id ? {} : { display: "none" }}
     >
-      <HotelRatesTable hotel={hotel.name} />
+      {checkVendorIsUnique("_id", hotel._id, hotelsArr) && (
+        <HotelRatesTable hotel={hotel} />
+      )}
     </div>
   ));
 

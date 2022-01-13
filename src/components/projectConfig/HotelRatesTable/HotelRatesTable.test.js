@@ -1,10 +1,6 @@
 describe("table", () => {
-  it("should render a table, columns are all hotels, rows are the price fields", () => {});
-  it("on submit, should capture the values per hotel", () => {});
-  it("should aggregate all hotel values in an array of objects");
-});
-
-describe("save button", () => {
-  it("should save the hotel rates to the database", () => {});
-  it("should redirect to the next page", () => {});
+  it("v-should render tabs with selected Hotels", () => {});
+  it("v-should render forms of hotels which are active when the tab is active", () => {});
+  it("On submit, it should aggregate all hotel values in an array of objects", () => {});
+  it("when all hotels are saved, it should save the array of objects to the project", () => {});
 });

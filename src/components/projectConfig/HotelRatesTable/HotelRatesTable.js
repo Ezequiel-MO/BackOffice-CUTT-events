@@ -3,8 +3,14 @@ import * as Yup from "yup";
 import { TextInput } from "../../../ui/inputs/TextInput";
 import SaveButton from "../../../ui/buttons/saveButton/SaveButton";
 import styles from "./HRStyles.module.css";
+import { useDispatch } from "react-redux";
+import { ADD_HOTEL } from "../../../features/HotelRatesSlice";
 
-const HotelRatesTable = ({ hotel: hotel_name }) => {
+const HotelRatesTable = ({ hotel }) => {
+  const dispatch = useDispatch();
+  const AccummulateHotelRates = (values, hotel) => {
+    dispatch(ADD_HOTEL({ ...hotel, price: [values] }));
+  };
   return (
     <>
       <Formik
@@ -18,6 +24,7 @@ const HotelRatesTable = ({ hotel: hotel_name }) => {
         }}
         onSubmit={(values) => {
           console.log("hotel ", values);
+          AccummulateHotelRates(values, hotel);
         }}
         validationSchema={Yup.object({
           DUInr: Yup.number(),
