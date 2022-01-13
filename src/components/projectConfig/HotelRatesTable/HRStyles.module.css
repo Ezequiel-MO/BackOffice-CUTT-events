@@ -1,0 +1,17 @@
+.HR__form > fieldset{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 20rem;
+    background-color: #f5f1e9;
+    margin-top: -1rem;
+    border: none;
+    border-top-left-radius: 0;
+}
+
+.HR__form > fieldset > legend > h2{
+    color: #ea5933;    
+    margin-bottom: 1rem;
+}
+
+

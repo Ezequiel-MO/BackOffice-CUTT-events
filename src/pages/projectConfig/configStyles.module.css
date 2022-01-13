@@ -9,8 +9,10 @@ display: flex;
 align-items: center;
 }
 
-
-
 .save__button > button {
 width: 400px;
+}
+
+.hotel__rates {
+display: flex;
 }

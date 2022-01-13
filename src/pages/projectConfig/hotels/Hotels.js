@@ -6,8 +6,8 @@ import eventOptionsReducer, {
 } from "../projectFormReducer";
 import { SaveButton } from "../../../ui/buttons/saveButton/SaveButton";
 import { findSelectedOptions } from "../../../helper/HelperFunctions/HelperFunctions";
-import HotelRatesTable from "../../../components/projectConfig/HotelRatesTable/HotelRatesTable";
 import styles from "../configStyles.module.css";
+import Tabs from "../../../ui/tabs/Tabs";
 
 export const Hotels = () => {
   const { vendorOptions: hotelOptions } = useGetVendors("hotels");
@@ -50,7 +50,7 @@ export const Hotels = () => {
           <SaveButton text={"Add Hotels to project"} type='submit' />
         </div>
       </form>
-      {hotels.length > 0 && <HotelRatesTable hotels={hotels} />}
+      {hotels.length > 0 && <Tabs hotels={hotels} />}
     </div>
   );
 };

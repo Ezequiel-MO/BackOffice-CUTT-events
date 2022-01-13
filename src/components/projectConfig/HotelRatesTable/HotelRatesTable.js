@@ -2,8 +2,9 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { TextInput } from "../../../ui/inputs/TextInput";
 import SaveButton from "../../../ui/buttons/saveButton/SaveButton";
+import styles from "./HRStyles.module.css";
 
-const HotelRatesTable = ({ hotels }) => {
+const HotelRatesTable = ({ hotel: hotel_name }) => {
   return (
     <>
       <Formik
@@ -16,7 +17,7 @@ const HotelRatesTable = ({ hotels }) => {
           DailyTax: "",
         }}
         onSubmit={(values) => {
-          console.log("event ", values);
+          console.log("hotel ", values);
         }}
         validationSchema={Yup.object({
           DUInr: Yup.number(),
@@ -28,88 +29,63 @@ const HotelRatesTable = ({ hotels }) => {
         })}
       >
         {(formik) => (
-          <Form className='form'>
-            <div className='form-inputs'>
-              <table>
-                <thead>
-                  {hotels.map((hotel) => (
-                    <th align='right' key={hotel._id}>
-                      {hotel.name}
-                    </th>
-                  ))}
-                </thead>
-                <tbody>
-                  {hotels.map((hotel) => (
-                    <>
-                      <tr key={hotel._id}>
-                        <td>
-                          <TextInput
-                            label='Number of DUI rooms'
-                            name='DUInr'
-                            placeholder='Nr. of DUIS'
-                            type='number'
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <TextInput
-                            label='Rate per DUI room'
-                            name='DUIprice'
-                            placeholder='Per Room per night'
-                            type='number'
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <TextInput
-                            label='Breakfast'
-                            name='breakfast'
-                            placeholder='If not included in room rate'
-                            type='number'
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <TextInput
-                            label='Number of Double rooms'
-                            name='DoubleRoomNr'
-                            placeholder='Double/Twin rooms'
-                            type='number'
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <TextInput
-                            label='Rate per Double/Twin room'
-                            name='DoubleRoomPrice'
-                            placeholder='Per room per night'
-                            type='number'
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <TextInput
-                            label='Daily Tax '
-                            name='DailyTax'
-                            placeholder='City tax p.person p.night'
-                            type='number'
-                          />
-                        </td>
-                      </tr>
-                    </>
-                  ))}
-                </tbody>
-              </table>
+          <Form className={styles.HR__form}>
+            <fieldset>
+              <div>
+                <div>
+                  <TextInput
+                    label='Number of DUIs'
+                    name='DUInr'
+                    placeholder='Ex. 40'
+                    type='number'
+                  />
+                </div>
+                <div>
+                  <TextInput
+                    label='Rate per DUI'
+                    name='DUIprice'
+                    placeholder='Rate per night per room'
+                    type='number'
+                  />
+                </div>
+                <div>
+                  <TextInput
+                    label='Breakfast'
+                    name='breakfast'
+                    placeholder='If included, enter 0'
+                    type='number'
+                  />
+                </div>
+                <div>
+                  <TextInput
+                    label='Number of Double Rooms'
+                    name='DoubleRoomNr'
+                    placeholder='Number of Double Rooms'
+                    type='number'
+                  />
+                </div>
+                <div>
+                  <TextInput
+                    label='Rate per Double Room'
+                    name='DoubleRoomPrice'
+                    placeholder='Rate per night per room'
+                    type='number'
+                  />
+                </div>
+                <div>
+                  <TextInput
+                    label='City Tax'
+                    name='DailyTax'
+                    placeholder='City Tax p.person per night'
+                    type='number'
+                  />
+                </div>
+              </div>
 
               <div className='button'>
                 <SaveButton type='submit' text='Save and continue' />
               </div>
-            </div>
+            </fieldset>
           </Form>
         )}
       </Formik>
