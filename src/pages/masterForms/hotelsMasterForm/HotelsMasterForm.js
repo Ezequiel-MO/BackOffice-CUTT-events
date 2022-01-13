@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 import { useRef } from "react";
 import { Form, Formik } from "formik";
-import { SaveButton } from "../../../ui/Button/SaveButton";
+import { SaveButton } from "../../../ui/buttons/saveButton/SaveButton";
 import { Icon } from "@iconify/react";
 import { TextInput } from "../../../ui/inputs/TextInput";
 import { CheckboxInput } from "../../../ui/inputs/CheckboxInput";

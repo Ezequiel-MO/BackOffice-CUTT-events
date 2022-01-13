@@ -6,7 +6,7 @@ import { SET_PROJECT_STATUS } from "../../features/ProjectStatusSlice";
 import styles from "./listOfProjectsStyles.module.css";
 import SortableProjectsTable from "./sortableTable/SortableProjectsTable";
 
-const ListOfProjects = () => {
+const ListOfProjects = ({ page = false }) => {
   const [project, setProject] = useState("");
   let navigate = useNavigate();
   const dispatch_projectStatus = useDispatch();
@@ -29,7 +29,7 @@ const ListOfProjects = () => {
   };
 
   return (
-    <div className={/* styles.list__container */ styles.modal__container}>
+    <div className={page ? styles.list__container : styles.modal__container}>
       <div className={styles.list__header}>
         <form onSubmit={handleSubmit}>
           <span>
@@ -51,9 +51,11 @@ const ListOfProjects = () => {
         <button onClick={handleCreateProject}>+ New Project</button>
       </div>
       <SortableProjectsTable project={project} />
-      <button className={styles.list__cancelButton} onClick={handleCancel}>
-        Cancel
-      </button>
+      {!page && (
+        <button className={styles.list__cancelButton} onClick={handleCancel}>
+          Cancel
+        </button>
+      )}
     </div>
   );
 };

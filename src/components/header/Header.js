@@ -29,7 +29,10 @@ const Header = () => {
           </Link>
           <button
             onClick={handleOpenModalClick}
-            disabled={projectStatus === "searching-project"}
+            disabled={
+              projectStatus === "searching-project" ||
+              projectStatus === "creating-project"
+            }
           >
             {projectStatus === "initial"
               ? "Create Project"

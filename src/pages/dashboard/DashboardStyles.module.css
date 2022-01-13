@@ -1,0 +1,15 @@
+.dashboard__container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1rem;
+  position: relative;
+}
+
+.dashboard__vendors {
+  margin-left: 2rem;
+  position: absolute;
+  top: 1rem;
+  left: 25rem;
+
+}

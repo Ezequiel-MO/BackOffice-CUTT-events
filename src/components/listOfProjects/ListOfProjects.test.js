@@ -1,3 +1,7 @@
+describe("modal", () => {
+  it("when clicked outside of modal, it should hide", () => {});
+});
+
 describe("table", () => {
   it("should show a list of projects from the DB", () => {});
   it("should be sortable by date, ascending and descending", () => {});

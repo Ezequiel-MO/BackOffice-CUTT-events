@@ -1,6 +1,9 @@
 .form {
   display: flex;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: fit-content;
+
 }
 
 .form fieldset {

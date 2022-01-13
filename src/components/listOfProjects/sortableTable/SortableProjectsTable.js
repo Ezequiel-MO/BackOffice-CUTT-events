@@ -55,7 +55,7 @@ const SortableProjectsTable = ({ project: searchWord }) => {
               project.clientCo.toLowerCase().includes(searchWord.toLowerCase())
             );
           })
-          .slice(0, 6)
+          .slice(0, 10)
           .map(({ code, accountManager, createdAt, clientCo, _id }) => (
             <tr key={_id}>
               <td>{code}</td>

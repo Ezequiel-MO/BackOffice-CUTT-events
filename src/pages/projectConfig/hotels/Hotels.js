@@ -4,7 +4,7 @@ import ProjectSelector from "../../../ui/Select/ProjectSelector";
 import eventOptionsReducer, {
   optionsInitialState,
 } from "../projectFormReducer";
-import { SaveButton } from "../../../ui/Button/SaveButton";
+import { SaveButton } from "../../../ui/buttons/saveButton/SaveButton";
 import { findSelectedOptions } from "../../../helper/HelperFunctions/HelperFunctions";
 import HotelRatesTable from "../../../components/projectConfig/HotelRatesTable/HotelRatesTable";
 

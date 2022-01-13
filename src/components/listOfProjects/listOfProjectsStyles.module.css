@@ -1,4 +1,13 @@
-
+.list__container {
+  width: 55rem;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 1rem;
+  left: 25rem;
+  border-radius: 0.5rem;
+}
 
 .modal__container {
   border: 1px solid #ccc;
@@ -26,6 +35,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
+  margin-bottom: 1rem;
+  margin-left: -1.2rem;
 }
 
 form {
