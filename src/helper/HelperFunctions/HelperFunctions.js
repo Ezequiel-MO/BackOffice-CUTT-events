@@ -17,7 +17,7 @@ export const checkCodeIsUnique = (code, array) => {
   return codeIsUnique;
 };
 
-//Hotels
+//Hotels, morning events, afternoon events, lunches and dinners
 export const findSelectedOptions = (array, fullArray) => {
   let selectedOptionsFullObject = [];
 
@@ -113,4 +113,40 @@ export const getDate = (date) => {
   const month = newDate.toLocaleString("default", { month: "short" });
   const year = newDate.getFullYear();
   return `${day}/${month}/${year}`;
+};
+
+//useScheduleProjectForm
+
+export const computeTotalDays = (startDate, endDate) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const diffTime = Math.abs(end - start);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays;
+};
+
+export const whichDay = (counter, daydifference) => {
+  if (counter === 1) {
+    return "Arrival Day";
+  } else if (counter === daydifference) {
+    return "Departure Day";
+  } else {
+    return "Day " + counter;
+  }
+};
+
+//useTransferOptions.js
+
+export const findUniqueCitiesinDB = (array) => {
+  return [...new Set(array.map((item) => item.city))];
+};
+
+export const findUniqueVendorsPerCity = (array, city) => {
+  const filteredVendors = array.filter((item) => item.city === city);
+  return [...new Set(filteredVendors.map((item) => item.company))];
+};
+
+export const findUniqueCapacitiesPerVendor = (array, vendor) => {
+  const filteredCapacities = array.filter((item) => item.company === vendor);
+  return [...new Set(filteredCapacities.map((item) => item.vehicleCapacity))];
 };
