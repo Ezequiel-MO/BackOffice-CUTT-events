@@ -7,8 +7,10 @@ import { useAxiosFetch } from "../../hooks/useAxiosFetch";
 import { baseURL } from "../../helper/axios";
 import { selectProjectStatus } from "../../features/ProjectStatusSlice";
 import "./tabStyles.css";
+import { useNavigate } from "react-router-dom";
 
 const Tabs = ({ hotels }) => {
+  const navigate = useNavigate();
   const [visibleTab, setVisibleTab] = useState(hotels[0]._id);
   const [hotelRates, setHotelRates] = useState(hotels);
   const hotelsArr = useSelector(selectHotelRates);
