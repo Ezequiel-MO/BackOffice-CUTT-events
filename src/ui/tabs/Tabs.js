@@ -7,10 +7,10 @@ import { useAxiosFetch } from "../../hooks/useAxiosFetch";
 import { baseURL } from "../../helper/axios";
 import { selectProjectStatus } from "../../features/ProjectStatusSlice";
 import "./tabStyles.css";
-import { useNavigate } from "react-router-dom";
+/* import { useNavigate } from "react-router-dom"; */
 
 const Tabs = ({ hotels }) => {
-  const navigate = useNavigate();
+  /* const navigate = useNavigate(); */
   const [visibleTab, setVisibleTab] = useState(hotels[0]._id);
   const [hotelRates, setHotelRates] = useState(hotels);
   const hotelsArr = useSelector(selectHotelRates);
@@ -20,7 +20,7 @@ const Tabs = ({ hotels }) => {
   } = useAxiosFetch(`${baseURL}/project/${projectStatus}`);
 
   useEffect(() => {
-    if (hotelRates.length === 0) {
+    if (hotelRates.length === 0 && projectByCode) {
       PostToEndpoint(hotelsArr, `/addHotels/${projectByCode._id}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
