@@ -1,7 +1,9 @@
-const SelectTransfers = () => {
+const SelectTransfers = ({ city }) => {
   return (
     <div>
-      <h1>Select transfers</h1>
+      <h1>
+        Transfers for <span>{city}</span>
+      </h1>
     </div>
   );
 };

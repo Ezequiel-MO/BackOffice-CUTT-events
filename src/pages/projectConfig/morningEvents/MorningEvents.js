@@ -5,13 +5,18 @@ import styles from "../configStyles.module.css";
 import SelectTransfers from "../../../components/selectTransfers/SelectTransfers";
 
 export const MorningEvents = () => {
-  const { handleFormSubmit, projectByCode, eventOptions, storeSelectedValues } =
-    useScheduleProjectForm();
+  const {
+    handleSubmit,
+    projectByCode,
+    eventOptions,
+    storeSelectedValues,
+    showSubMenu,
+  } = useScheduleProjectForm();
   return (
     <div>
       {projectByCode && <p>Date: {projectByCode.arrivalDay}</p>}
       <div className={styles.config__container}>
-        <form onSubmit={handleFormSubmit}>
+        <form onSubmit={handleSubmit}>
           <ProjectSelector
             name='morning-event'
             icon='vaadin:morning'
@@ -23,7 +28,7 @@ export const MorningEvents = () => {
             <SaveButton text={"Add Morning Event to project"} type='submit' />
           </div>
         </form>
-        <SelectTransfers />
+        {showSubMenu && <SelectTransfers city={projectByCode.groupLocation} />}
       </div>
     </div>
   );

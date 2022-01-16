@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { selectProjectStatus } from "../../features/ProjectStatusSlice";
 import { useAxiosFetch } from "../../hooks/useAxiosFetch";
 import { baseURL } from "../../helper/axios";
-import { useNavigate } from "react-router";
+/* import { useNavigate } from "react-router"; */
 import useGetVendors from "../../hooks/useGetVendors";
 import eventOptionsReducer from "./projectFormReducer";
 import { optionsInitialState } from "./projectFormReducer";
@@ -14,15 +14,16 @@ import {
 } from "../../helper/HelperFunctions/HelperFunctions";
 
 const useScheduleProjectForm = () => {
-  const navigate = useNavigate();
+  /*  const navigate = useNavigate(); */
   const [schedule, setSchedule] = useState([]);
   const [dayProgram, setDayProgram] = useState({});
+  const [showSubMenu, setShowSubMenu] = useState(false);
   const [selectedOptions, dispatch] = useReducer(
     eventOptionsReducer,
     optionsInitialState
   );
 
-  const [counter, setCounter] = useState(1);
+  const [counter] = useState(1);
 
   const { vendorOptions: restaurantOptions } = useGetVendors("restaurants");
   const { vendorOptions: eventOptions } = useGetVendors("events");
@@ -91,6 +92,7 @@ const useScheduleProjectForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     updateInputData();
+    setShowSubMenu(true);
     dispatch({
       type: "clear",
     });
@@ -105,6 +107,7 @@ const useScheduleProjectForm = () => {
     counter,
     whichDay,
     selectedOptions,
+    showSubMenu,
   };
 };
 

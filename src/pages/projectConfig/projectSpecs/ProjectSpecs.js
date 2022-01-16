@@ -57,14 +57,14 @@ export const ProjectSpecs = () => {
           code: Yup.string()
             .min(10, "Must be 10 characters or more")
             .required("Required"),
-          accountManager: Yup.string().required("Required"),
-          groupName: Yup.string().required("Required"),
+          accountManager: Yup.string() /* .required("Required") */,
+          groupName: Yup.string() /* .required("Required") */,
           groupLocation: Yup.string().required("Required"),
-          arrivalDay: Yup.date().required("Required").nullable(),
-          departureDay: Yup.date().required("Required"),
-          nrPax: Yup.number().required("Required"),
-          clientCo: Yup.string().required("Required"),
-          clientAccManager: Yup.string().required("Required"),
+          arrivalDay: Yup.date() /* .required("Required").nullable()*/,
+          departureDay: Yup.date() /* .required("Required") */,
+          nrPax: Yup.number() /* .required("Required") */,
+          clientCo: Yup.string() /* .required("Required") */,
+          clientAccManager: Yup.string() /* .required("Required") */,
         })}
       >
         {(formik) => (
