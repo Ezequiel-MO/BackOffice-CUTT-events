@@ -12,6 +12,7 @@ export const MorningEvents = () => {
     storeSelectedValues,
     transferVendorsInACity,
     showSubMenu,
+    capacitiesPerVendor,
   } = useScheduleProjectForm();
   return (
     <div>
@@ -33,6 +34,7 @@ export const MorningEvents = () => {
           <SelectTransfers
             city={projectByCode.groupLocation}
             companies={transferVendorsInACity}
+            capacities={capacitiesPerVendor}
           />
         )}
       </div>

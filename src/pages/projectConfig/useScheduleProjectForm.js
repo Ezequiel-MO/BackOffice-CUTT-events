@@ -10,6 +10,7 @@ import { optionsInitialState } from "./projectFormReducer";
 import {
   computeTotalDays,
   findSelectedOptions,
+  findUniqueCapacitiesPerVendor,
   findUniqueVendorsPerCity,
   whichDay,
 } from "../../helper/HelperFunctions/HelperFunctions";
@@ -17,9 +18,10 @@ import {
 const useScheduleProjectForm = () => {
   /*  const navigate = useNavigate(); */
   const [schedule, setSchedule] = useState([]);
+  const [showSubMenu, setShowSubMenu] = useState(false);
+  const [capacitiesPerVendor, setCapacitiesPerVendor] = useState([]);
   const [transferVendorsInACity, setTransferVendorsInACity] = useState([]);
   const [dayProgram, setDayProgram] = useState({});
-  const [showSubMenu, setShowSubMenu] = useState(false);
   const [selectedOptions, dispatch] = useReducer(
     eventOptionsReducer,
     optionsInitialState
@@ -92,6 +94,17 @@ const useScheduleProjectForm = () => {
     });
   };
 
+  useEffect(() => {
+    if (transferVendorsInACity.length > 0) {
+      const uniqueCapacitiesPerVendor = findUniqueCapacitiesPerVendor(
+        transferOptions,
+        transferVendorsInACity[0]
+      );
+      setCapacitiesPerVendor(uniqueCapacitiesPerVendor);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transferVendorsInACity, transferOptions]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     updateInputData();
@@ -99,8 +112,8 @@ const useScheduleProjectForm = () => {
       transferOptions,
       projectByCode.groupLocation
     );
-    setTransferVendorsInACity(uniqueTransferCompaniesPerCity);
     setShowSubMenu(true);
+    setTransferVendorsInACity(uniqueTransferCompaniesPerCity);
     dispatch({
       type: "clear",
     });
@@ -117,6 +130,7 @@ const useScheduleProjectForm = () => {
     selectedOptions,
     showSubMenu,
     transferVendorsInACity,
+    capacitiesPerVendor,
   };
 };
 
