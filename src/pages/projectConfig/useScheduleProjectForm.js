@@ -10,12 +10,14 @@ import { optionsInitialState } from "./projectFormReducer";
 import {
   computeTotalDays,
   findSelectedOptions,
+  findUniqueVendorsPerCity,
   whichDay,
 } from "../../helper/HelperFunctions/HelperFunctions";
 
 const useScheduleProjectForm = () => {
   /*  const navigate = useNavigate(); */
   const [schedule, setSchedule] = useState([]);
+  const [transferVendorsInACity, setTransferVendorsInACity] = useState([]);
   const [dayProgram, setDayProgram] = useState({});
   const [showSubMenu, setShowSubMenu] = useState(false);
   const [selectedOptions, dispatch] = useReducer(
@@ -93,6 +95,11 @@ const useScheduleProjectForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     updateInputData();
+    const uniqueTransferCompaniesPerCity = findUniqueVendorsPerCity(
+      transferOptions,
+      projectByCode.groupLocation
+    );
+    setTransferVendorsInACity(uniqueTransferCompaniesPerCity);
     setShowSubMenu(true);
     dispatch({
       type: "clear",
@@ -103,13 +110,13 @@ const useScheduleProjectForm = () => {
     handleSubmit,
     projectByCode,
     eventOptions,
-    transferOptions,
     restaurantOptions,
     storeSelectedValues,
     counter,
     whichDay,
     selectedOptions,
     showSubMenu,
+    transferVendorsInACity,
   };
 };
 

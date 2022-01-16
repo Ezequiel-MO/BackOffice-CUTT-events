@@ -10,7 +10,7 @@ export const MorningEvents = () => {
     projectByCode,
     eventOptions,
     storeSelectedValues,
-    transferOptions,
+    transferVendorsInACity,
     showSubMenu,
   } = useScheduleProjectForm();
   return (
@@ -29,7 +29,12 @@ export const MorningEvents = () => {
             <SaveButton text={"Add Morning Event to project"} type='submit' />
           </div>
         </form>
-        {showSubMenu && <SelectTransfers city={projectByCode.groupLocation} />}
+        {showSubMenu && (
+          <SelectTransfers
+            city={projectByCode.groupLocation}
+            companies={transferVendorsInACity}
+          />
+        )}
       </div>
     </div>
   );

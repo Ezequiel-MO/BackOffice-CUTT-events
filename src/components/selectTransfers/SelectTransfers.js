@@ -2,7 +2,8 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import SelectInput from "../../ui/inputs/SelectInput";
 
-const SelectTransfers = ({ city }) => {
+const SelectTransfers = ({ city, companies }) => {
+  console.log("companies", companies);
   return (
     <div>
       <h2>
@@ -23,8 +24,11 @@ const SelectTransfers = ({ city }) => {
           <Form className='form'>
             <SelectInput name='vendor'>
               <option value=''>Select a vendor</option>
-              <option value='1'>Vendor 1</option>
-              <option value='2'>Vendor 2</option>
+              {companies.map((company) => (
+                <option key={company} value={company}>
+                  {company}
+                </option>
+              ))}
             </SelectInput>
           </Form>
         )}
