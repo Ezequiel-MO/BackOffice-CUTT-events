@@ -26,6 +26,7 @@ const useScheduleProjectForm = () => {
   const [counter] = useState(1);
 
   const { vendorOptions: restaurantOptions } = useGetVendors("restaurants");
+  const { vendorOptions: transferOptions } = useGetVendors("transfers");
   const { vendorOptions: eventOptions } = useGetVendors("events");
   const projectStatus = useSelector(selectProjectStatus);
   const {
@@ -102,6 +103,7 @@ const useScheduleProjectForm = () => {
     handleSubmit,
     projectByCode,
     eventOptions,
+    transferOptions,
     restaurantOptions,
     storeSelectedValues,
     counter,

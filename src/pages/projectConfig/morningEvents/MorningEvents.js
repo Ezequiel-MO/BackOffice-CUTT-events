@@ -10,6 +10,7 @@ export const MorningEvents = () => {
     projectByCode,
     eventOptions,
     storeSelectedValues,
+    transferOptions,
     showSubMenu,
   } = useScheduleProjectForm();
   return (
