@@ -131,7 +131,6 @@ const useScheduleProjectForm = () => {
     selectedOptions,
     showSubMenu,
     transferVendorsInACity,
-    capacitiesPerVendor,
   };
 };
 
