@@ -74,7 +74,7 @@ const SelectTransfers = ({
         Transfers available in <span>{city}</span>
       </h2>
       <form onSubmit={(e) => handleTransferSubmit(e, eventOfTheDay)}>
-        {/*  <div>
+        <div>
           <button type='button' onClick={() => increase(-1)}>
             <Icon icon='akar-icons:minus' color='rgba(238, 170, 85, 0.6)' />
           </button>
@@ -82,7 +82,7 @@ const SelectTransfers = ({
           <button type='button' onClick={() => increase(1)}>
             <Icon icon='akar-icons:plus' color='rgba(238, 170, 85, 0.6)' />
           </button>
-        </div> */}
+        </div>
         <select onChange={handleCompanyChange}>
           <option value=''>Select a company</option>
           {companies?.map((company) => (

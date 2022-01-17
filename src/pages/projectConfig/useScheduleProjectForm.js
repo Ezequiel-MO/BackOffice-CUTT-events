@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { selectProjectStatus } from "../../features/ProjectStatusSlice";
 import { useAxiosFetch } from "../../hooks/useAxiosFetch";
 import { baseURL } from "../../helper/axios";
-/* import { useNavigate } from "react-router"; */
+import { useNavigate } from "react-router";
 import useGetVendors from "../../hooks/useGetVendors";
 import eventOptionsReducer from "./projectFormReducer";
 import { optionsInitialState } from "./projectFormReducer";
@@ -16,11 +16,12 @@ import {
 import {
   selectCompany,
   selectServiceType,
+  selectTransferCounter,
   selectVehicleSize,
 } from "../../features/TransfersSlice";
 
 const useScheduleProjectForm = () => {
-  /*  const navigate = useNavigate(); */
+  const navigate = useNavigate();
   const [schedule, setSchedule] = useState([]);
   const [showSubMenu, setShowSubMenu] = useState(false);
   const [transferVendorsInACity, setTransferVendorsInACity] = useState([]);
@@ -42,6 +43,7 @@ const useScheduleProjectForm = () => {
   const company = useSelector(selectCompany);
   const vehicleSize = useSelector(selectVehicleSize);
   const typeOfService = useSelector(selectServiceType);
+  const transferCounter = useSelector(selectTransferCounter);
 
   const storeSelectedValues = (array, action) => {
     if (action.action === "select-option" || action.action === "remove-value") {
@@ -66,6 +68,7 @@ const useScheduleProjectForm = () => {
       vehicleSize &&
       typeOfService &&
       transferOptions &&
+      transferCounter &&
       dayProgram
     ) {
       console.log("transfers huhu", transferOptions);
@@ -80,10 +83,13 @@ const useScheduleProjectForm = () => {
         [typeOfService]: selectedOption[0][typeOfService],
         vehicleCapacity: selectedOption[0]["vehicleCapacity"],
       };
-      const dayProgramCopy = { ...dayProgram };
-      const morningEvents = dayProgramCopy.morningEvents;
-      const firstObject = morningEvents[0];
-      firstObject.transfer = [TransferObjToAdd];
+      const transfersArr = [];
+      if (transferCounter > 0) {
+        for (let i = 0; i < transferCounter; i++) {
+          transfersArr.push(TransferObjToAdd);
+        }
+      }
+      const morningEvents = { ...dayProgram }.morningEvents;
       if (eventOfTheDay === "morningEvents") {
         morningEvents.transfer = [];
         setDayProgram({
@@ -91,10 +97,13 @@ const useScheduleProjectForm = () => {
           morningEvents: morningEvents.map((item) => {
             return {
               ...item,
-              transfer: [TransferObjToAdd],
+              transfer: transfersArr,
             };
           }),
         });
+        setTimeout(() => {
+          navigate("/lunches");
+        }, 1000);
       }
     }
   };
