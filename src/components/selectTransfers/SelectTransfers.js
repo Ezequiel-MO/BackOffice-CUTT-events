@@ -15,7 +15,13 @@ import {
   findUniqueCapacitiesPerVendor,
 } from "../../helper/HelperFunctions/HelperFunctions";
 
-const SelectTransfers = ({ city, companies, transferOptions }) => {
+const SelectTransfers = ({
+  city,
+  companies,
+  transferOptions,
+  handleTransferSubmit,
+  eventOfTheDay,
+}) => {
   const [capacities, setCapacities] = useState([]);
   const [serviceOptions, setServiceOptions] = useState([]);
   const dispatch = useDispatch();
@@ -50,13 +56,6 @@ const SelectTransfers = ({ city, companies, transferOptions }) => {
       vehicleSize
     );
     setServiceOptions(serviceOptions);
-    console.log(
-      "typeOfServices",
-      serviceOptions,
-      company,
-      transferOptions,
-      vehicleSize
-    );
   }, [vehicleSize, company, transferOptions]);
 
   useEffect(() => {
@@ -74,39 +73,44 @@ const SelectTransfers = ({ city, companies, transferOptions }) => {
       <h2>
         Transfers available in <span>{city}</span>
       </h2>
-      <div>
-        <button type='button' onClick={() => increase(-1)}>
-          <Icon icon='akar-icons:minus' color='rgba(238, 170, 85, 0.6)' />
+      <form onSubmit={(e) => handleTransferSubmit(e, eventOfTheDay)}>
+        {/*  <div>
+          <button type='button' onClick={() => increase(-1)}>
+            <Icon icon='akar-icons:minus' color='rgba(238, 170, 85, 0.6)' />
+          </button>
+          {counter}
+          <button type='button' onClick={() => increase(1)}>
+            <Icon icon='akar-icons:plus' color='rgba(238, 170, 85, 0.6)' />
+          </button>
+        </div> */}
+        <select onChange={handleCompanyChange}>
+          <option value=''>Select a company</option>
+          {companies?.map((company) => (
+            <option key={company} value={company}>
+              {company}
+            </option>
+          ))}
+        </select>
+        <select onChange={handleCapacityChange}>
+          <option value=''>Select Size of vehicle</option>
+          {capacities?.map((capacity) => (
+            <option key={capacity} value={capacity}>
+              {capacity}
+            </option>
+          ))}
+        </select>
+        <select onChange={handleServiceChange}>
+          <option value=''>Select Type of Service</option>
+          {serviceOptions?.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+        <button style={{ display: "block" }} type='submit'>
+          Add
         </button>
-        {counter}
-        <button type='button' onClick={() => increase(1)}>
-          <Icon icon='akar-icons:plus' color='rgba(238, 170, 85, 0.6)' />
-        </button>
-      </div>
-      <select onChange={handleCompanyChange}>
-        <option value=''>Select a company</option>
-        {companies?.map((company) => (
-          <option key={company} value={company}>
-            {company}
-          </option>
-        ))}
-      </select>
-      <select onChange={handleCapacityChange}>
-        <option value=''>Select Size of vehicle</option>
-        {capacities?.map((capacity) => (
-          <option key={capacity} value={capacity}>
-            {capacity}
-          </option>
-        ))}
-      </select>
-      <select onChange={handleServiceChange}>
-        <option value=''>Select Type of Service</option>
-        {serviceOptions?.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
+      </form>
     </div>
   );
 };

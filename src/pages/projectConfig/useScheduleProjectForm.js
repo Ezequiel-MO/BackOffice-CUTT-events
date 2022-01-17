@@ -10,16 +10,19 @@ import { optionsInitialState } from "./projectFormReducer";
 import {
   computeTotalDays,
   findSelectedOptions,
-  findUniqueCapacitiesPerVendor,
   findUniqueVendorsPerCity,
   whichDay,
 } from "../../helper/HelperFunctions/HelperFunctions";
+import {
+  selectCompany,
+  selectServiceType,
+  selectVehicleSize,
+} from "../../features/TransfersSlice";
 
 const useScheduleProjectForm = () => {
   /*  const navigate = useNavigate(); */
   const [schedule, setSchedule] = useState([]);
   const [showSubMenu, setShowSubMenu] = useState(false);
-  const [capacitiesPerVendor, setCapacitiesPerVendor] = useState([]);
   const [transferVendorsInACity, setTransferVendorsInACity] = useState([]);
   const [dayProgram, setDayProgram] = useState({});
   const [selectedOptions, dispatch] = useReducer(
@@ -36,6 +39,9 @@ const useScheduleProjectForm = () => {
   const {
     data: { project: projectByCode },
   } = useAxiosFetch(`${baseURL}/project/${projectStatus}`);
+  const company = useSelector(selectCompany);
+  const vehicleSize = useSelector(selectVehicleSize);
+  const typeOfService = useSelector(selectServiceType);
 
   const storeSelectedValues = (array, action) => {
     if (action.action === "select-option" || action.action === "remove-value") {
@@ -50,6 +56,46 @@ const useScheduleProjectForm = () => {
       dispatch({
         type: "clear",
       });
+    }
+  };
+
+  const handleTransferSubmit = (e, eventOfTheDay) => {
+    e.preventDefault();
+    if (
+      company &&
+      vehicleSize &&
+      typeOfService &&
+      transferOptions &&
+      dayProgram
+    ) {
+      console.log("transfers huhu", transferOptions);
+      console.log("company", company, "vehicleSize", vehicleSize);
+      const selectedOption = transferOptions.filter(
+        (option) =>
+          option.company === company &&
+          option.vehicleCapacity === parseInt(vehicleSize)
+      );
+
+      const TransferObjToAdd = {
+        [typeOfService]: selectedOption[0][typeOfService],
+        vehicleCapacity: selectedOption[0]["vehicleCapacity"],
+      };
+      const dayProgramCopy = { ...dayProgram };
+      const morningEvents = dayProgramCopy.morningEvents;
+      const firstObject = morningEvents[0];
+      firstObject.transfer = [TransferObjToAdd];
+      if (eventOfTheDay === "morningEvents") {
+        morningEvents.transfer = [];
+        setDayProgram({
+          ...dayProgram,
+          morningEvents: morningEvents.map((item) => {
+            return {
+              ...item,
+              transfer: [TransferObjToAdd],
+            };
+          }),
+        });
+      }
     }
   };
 
@@ -70,6 +116,7 @@ const useScheduleProjectForm = () => {
 
   useEffect(() => {
     setSchedule([...schedule, dayProgram]);
+    console.log("super console log", dayProgram);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dayProgram]);
 
@@ -78,13 +125,14 @@ const useScheduleProjectForm = () => {
       projectByCode.arrivalDay,
       projectByCode.departureDay
     );
+    const morningEvents = findSelectedOptions(
+      selectedOptions["morning-event"],
+      eventOptions
+    );
     setDayProgram({
       ...dayProgram,
       date: whichDay(counter, totalDays),
-      morningEvents: findSelectedOptions(
-        selectedOptions["morning-event"],
-        eventOptions
-      ),
+      morningEvents,
       lunch: findSelectedOptions(selectedOptions.lunch, restaurantOptions),
       afternoonEvents: findSelectedOptions(
         selectedOptions["afternoon-event"],
@@ -93,17 +141,6 @@ const useScheduleProjectForm = () => {
       dinner: findSelectedOptions(selectedOptions.dinner, restaurantOptions),
     });
   };
-
-  useEffect(() => {
-    if (transferVendorsInACity.length > 0) {
-      const uniqueCapacitiesPerVendor = findUniqueCapacitiesPerVendor(
-        transferOptions,
-        transferVendorsInACity[0]
-      );
-      setCapacitiesPerVendor(uniqueCapacitiesPerVendor);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transferVendorsInACity, transferOptions]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -131,6 +168,7 @@ const useScheduleProjectForm = () => {
     selectedOptions,
     showSubMenu,
     transferVendorsInACity,
+    handleTransferSubmit,
   };
 };
 

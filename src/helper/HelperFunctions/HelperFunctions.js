@@ -156,7 +156,6 @@ export const findServicesPerVendorAndCapacity = (array, vendor, capacity) => {
     (item) =>
       item.company === vendor && item.vehicleCapacity === parseInt(capacity)
   );
-  //iterate throuth filteredServices[0] object, remove city, company vehicleCapacity keys, and return an array with the remaining keys
   let services = [];
   for (let key in filteredServices[0]) {
     if (
