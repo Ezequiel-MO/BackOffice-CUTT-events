@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const projectStatusSlice = createSlice({
   name: "projectStatus",
   initialState: {
-    projectStatus: "initial",
+    projectStatus: "prueba",
   },
   reducers: {
     SET_PROJECT_STATUS: (state, action) => {

@@ -124,6 +124,7 @@ const useScheduleProjectForm = () => {
     projectByCode,
     eventOptions,
     restaurantOptions,
+    transferOptions,
     storeSelectedValues,
     counter,
     whichDay,

@@ -9,6 +9,7 @@ export const MorningEvents = () => {
     handleSubmit,
     projectByCode,
     eventOptions,
+    transferOptions,
     storeSelectedValues,
     transferVendorsInACity,
     showSubMenu,
@@ -34,6 +35,7 @@ export const MorningEvents = () => {
           <SelectTransfers
             city={projectByCode.groupLocation}
             companies={transferVendorsInACity}
+            transferOptions={transferOptions}
             capacities={capacitiesPerVendor}
           />
         )}

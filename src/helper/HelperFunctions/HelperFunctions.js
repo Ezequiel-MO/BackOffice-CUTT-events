@@ -150,3 +150,24 @@ export const findUniqueCapacitiesPerVendor = (array, vendor) => {
   const filteredCapacities = array.filter((item) => item.company === vendor);
   return [...new Set(filteredCapacities.map((item) => item.vehicleCapacity))];
 };
+
+export const findServicesPerVendorAndCapacity = (array, vendor, capacity) => {
+  const filteredServices = array.filter(
+    (item) =>
+      item.company === vendor && item.vehicleCapacity === parseInt(capacity)
+  );
+  //iterate throuth filteredServices[0] object, remove city, company vehicleCapacity keys, and return an array with the remaining keys
+  let services = [];
+  for (let key in filteredServices[0]) {
+    if (
+      key !== "city" &&
+      key !== "company" &&
+      key !== "vehicleCapacity" &&
+      key !== "_id" &&
+      key !== "__v"
+    ) {
+      services.push(key);
+    }
+  }
+  return services;
+};
