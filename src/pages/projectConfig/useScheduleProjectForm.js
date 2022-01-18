@@ -1,5 +1,5 @@
 import { useState, useEffect, useReducer } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectProjectStatus } from "../../features/ProjectStatusSlice";
 import { useAxiosFetch } from "../../hooks/useAxiosFetch";
 import { baseURL } from "../../helper/axios";
@@ -19,13 +19,18 @@ import {
   selectTransferCounter,
   selectVehicleSize,
 } from "../../features/TransfersSlice";
+import {
+  SET_DATE,
+  SET_LUNCH_EVENTS,
+  SET_MORNING_EVENTS,
+} from "../../features/DayProgramSlice";
 
 const useScheduleProjectForm = () => {
   const navigate = useNavigate();
   const [schedule, setSchedule] = useState([]);
   const [showSubMenu, setShowSubMenu] = useState(false);
   const [transferVendorsInACity, setTransferVendorsInACity] = useState([]);
-  const [dayProgram, setDayProgram] = useState({});
+  const [dayProgram] = useState({});
   const [selectedOptions, dispatch] = useReducer(
     eventOptionsReducer,
     optionsInitialState
@@ -44,7 +49,7 @@ const useScheduleProjectForm = () => {
   const vehicleSize = useSelector(selectVehicleSize);
   const typeOfService = useSelector(selectServiceType);
   const transferCounter = useSelector(selectTransferCounter);
-
+  const dispatch_dayProgram = useDispatch();
   const storeSelectedValues = (array, action) => {
     if (action.action === "select-option" || action.action === "remove-value") {
       dispatch({
@@ -63,16 +68,19 @@ const useScheduleProjectForm = () => {
 
   const handleTransferSubmit = (e, eventOfTheDay) => {
     e.preventDefault();
+
+    const totalDays = computeTotalDays(
+      projectByCode.arrivalDay,
+      projectByCode.departureDay
+    );
+
     if (
       company &&
       vehicleSize &&
       typeOfService &&
       transferOptions &&
-      transferCounter &&
-      dayProgram
+      transferCounter
     ) {
-      console.log("transfers huhu", transferOptions);
-      console.log("company", company, "vehicleSize", vehicleSize);
       const selectedOption = transferOptions.filter(
         (option) =>
           option.company === company &&
@@ -89,20 +97,39 @@ const useScheduleProjectForm = () => {
           transfersArr.push(TransferObjToAdd);
         }
       }
-      const morningEvents = { ...dayProgram }.morningEvents;
+
       if (eventOfTheDay === "morningEvents") {
-        morningEvents.transfer = [];
-        setDayProgram({
-          ...dayProgram,
-          morningEvents: morningEvents.map((item) => {
-            return {
-              ...item,
-              transfer: transfersArr,
-            };
-          }),
+        const morningEventsPayload = findSelectedOptions(
+          selectedOptions["morning-event"],
+          eventOptions
+        ).map((item) => {
+          return {
+            ...item,
+            transfer: transfersArr,
+          };
         });
+
+        dispatch_dayProgram(SET_DATE(whichDay(counter, totalDays)));
+        dispatch_dayProgram(SET_MORNING_EVENTS(morningEventsPayload));
         setTimeout(() => {
           navigate("/lunches");
+        }, 1000);
+      }
+
+      if (eventOfTheDay === "lunch") {
+        const lunchPayload = findSelectedOptions(
+          selectedOptions.lunch,
+          restaurantOptions
+        ).map((item) => {
+          return {
+            ...item,
+            transfer: transfersArr,
+          };
+        });
+
+        dispatch_dayProgram(SET_LUNCH_EVENTS(lunchPayload));
+        setTimeout(() => {
+          navigate("/afernoon-events");
         }, 1000);
       }
     }
@@ -125,44 +152,19 @@ const useScheduleProjectForm = () => {
 
   useEffect(() => {
     setSchedule([...schedule, dayProgram]);
-    console.log("super console log", dayProgram);
+    console.log("super console log", dayProgram, schedule);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dayProgram]);
 
-  const updateInputData = () => {
-    const totalDays = computeTotalDays(
-      projectByCode.arrivalDay,
-      projectByCode.departureDay
-    );
-    const morningEvents = findSelectedOptions(
-      selectedOptions["morning-event"],
-      eventOptions
-    );
-    setDayProgram({
-      ...dayProgram,
-      date: whichDay(counter, totalDays),
-      morningEvents,
-      lunch: findSelectedOptions(selectedOptions.lunch, restaurantOptions),
-      afternoonEvents: findSelectedOptions(
-        selectedOptions["afternoon-event"],
-        eventOptions
-      ),
-      dinner: findSelectedOptions(selectedOptions.dinner, restaurantOptions),
-    });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateInputData();
+    console.log("submitted");
     const uniqueTransferCompaniesPerCity = findUniqueVendorsPerCity(
       transferOptions,
       projectByCode.groupLocation
     );
     setShowSubMenu(true);
     setTransferVendorsInACity(uniqueTransferCompaniesPerCity);
-    dispatch({
-      type: "clear",
-    });
   };
 
   return {
