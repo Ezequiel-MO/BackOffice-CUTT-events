@@ -3,6 +3,8 @@ import projectStatusReducer from "../features/ProjectStatusSlice";
 import hotelRatesReducer from "../features/HotelRatesSlice";
 import transfersReducer from "../features/TransfersSlice";
 import dayProgramReducer from "../features/DayProgramSlice";
+import dayCounterReducer from "../features/DayCounterSlice";
+import scheduleReducer from "../features/ScheduleSlice";
 
 export default configureStore({
   reducer: {
@@ -10,5 +12,7 @@ export default configureStore({
     hotelRates: hotelRatesReducer,
     transfers: transfersReducer,
     dayProgram: dayProgramReducer,
+    dayCounter: dayCounterReducer,
+    schedule: scheduleReducer,
   },
 });

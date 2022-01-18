@@ -27,10 +27,11 @@ import {
   SET_MORNING_EVENTS,
   selectDayProgram,
 } from "../../features/DayProgramSlice";
+import { INCREMENT, selectDayCounter } from "../../features/DayCounterSlice";
+import { ADD_DAY } from "../../features/ScheduleSlice";
 
 const useScheduleProjectForm = () => {
   const navigate = useNavigate();
-  const [schedule, setSchedule] = useState([]);
   const [showSubMenu, setShowSubMenu] = useState(false);
   const [transferVendorsInACity, setTransferVendorsInACity] = useState([]);
   const [selectedOptions, dispatch] = useReducer(
@@ -38,7 +39,7 @@ const useScheduleProjectForm = () => {
     optionsInitialState
   );
 
-  const [counter, setCounter] = useState(1);
+  const dayCounter = useSelector(selectDayCounter);
   const dayProgram = useSelector(selectDayProgram);
 
   const { vendorOptions: restaurantOptions } = useGetVendors("restaurants");
@@ -53,6 +54,8 @@ const useScheduleProjectForm = () => {
   const typeOfService = useSelector(selectServiceType);
   const transferCounter = useSelector(selectTransferCounter);
   const dispatch_dayProgram = useDispatch();
+  const dispatch_dayCounter = useDispatch();
+  const dispatch_schedule = useDispatch();
   const storeSelectedValues = (array, action) => {
     if (action.action === "select-option" || action.action === "remove-value") {
       dispatch({
@@ -69,11 +72,10 @@ const useScheduleProjectForm = () => {
     }
   };
 
-  const totalDays =
-    projectByCode &&
-    computeTotalDays(projectByCode.arrivalDay, projectByCode.departureDay);
-
   const handleTransferSubmit = (e, eventOfTheDay) => {
+    const totalDays =
+      projectByCode &&
+      computeTotalDays(projectByCode.arrivalDay, projectByCode.departureDay);
     e.preventDefault();
     if (
       company &&
@@ -98,7 +100,7 @@ const useScheduleProjectForm = () => {
           transfersArr.push(TransferObjToAdd);
         }
       }
-      dispatch_dayProgram(SET_DATE(whichDay(counter, totalDays)));
+
       if (eventOfTheDay === "morningEvents") {
         const morningEventsPayload = findSelectedOptions(
           selectedOptions["morning-event"],
@@ -109,7 +111,7 @@ const useScheduleProjectForm = () => {
             transfer: transfersArr,
           };
         });
-
+        dispatch_dayProgram(SET_DATE(whichDay(dayCounter, totalDays)));
         dispatch_dayProgram(SET_MORNING_EVENTS(morningEventsPayload));
         setTimeout(() => {
           navigate("/lunches");
@@ -162,13 +164,17 @@ const useScheduleProjectForm = () => {
           };
         });
         dispatch_dayProgram(SET_DINNER_EVENTS(dinnerEventsPayload));
-        if (counter < totalDays) {
-          setCounter(counter + 1);
+        dispatch_schedule(ADD_DAY(dayProgram));
+        if (dayCounter < totalDays) {
+          dispatch_dayCounter(INCREMENT());
+          dispatch_dayProgram(SET_DATE(whichDay(dayCounter, totalDays)));
           setTimeout(() => {
             navigate("/morning-events");
           }, 1000);
-        } else if (counter === totalDays) {
-          alert("You have reached the end of the project");
+        } else if (dayCounter === totalDays) {
+          setTimeout(() => {
+            navigate("/");
+          }, 1000);
         }
       }
     }
@@ -176,7 +182,6 @@ const useScheduleProjectForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submitted");
     const uniqueTransferCompaniesPerCity = findUniqueVendorsPerCity(
       transferOptions,
       projectByCode.groupLocation
@@ -192,7 +197,6 @@ const useScheduleProjectForm = () => {
     restaurantOptions,
     transferOptions,
     storeSelectedValues,
-    counter,
     whichDay,
     selectedOptions,
     showSubMenu,

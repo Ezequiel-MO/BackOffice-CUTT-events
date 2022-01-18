@@ -45,7 +45,6 @@ const SelectTransfers = ({
   };
 
   const increase = (number) => {
-    console.log("clicked", number);
     dispatch(SET_COUNTER(number));
   };
 

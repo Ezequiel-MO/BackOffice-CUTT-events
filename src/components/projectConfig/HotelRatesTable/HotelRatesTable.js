@@ -23,7 +23,6 @@ const HotelRatesTable = ({ hotel }) => {
           DailyTax: "",
         }}
         onSubmit={(values) => {
-          console.log("hotel ", values);
           AccummulateHotelRates(values, hotel);
         }}
         validationSchema={Yup.object({

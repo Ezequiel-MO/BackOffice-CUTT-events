@@ -1,7 +1,6 @@
 import { baseAPI } from "../axios";
 
 export const checkForDuplicates = (string, array) => {
-  console.log("checkForDuplicates", string, array);
   let codeIsUnique = true;
   for (let i = 0; i < array.length; i++) {
     if (array[i] === string) {
@@ -47,7 +46,6 @@ export const transformValues = (valuesObj) => {
 };
 
 export const fillFormData = (values, files) => {
-  console.log("values", values, typeof values);
   let formData = new FormData();
   for (let key in values) {
     formData.append(key, values[key]);

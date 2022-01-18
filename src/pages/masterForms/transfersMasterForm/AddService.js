@@ -8,7 +8,6 @@ const AddService = ({
   companyValues,
   setCompanyValues,
 }) => {
-  console.log("status", status);
   const [value, setValue] = useState(0);
   const handleClick = () => {
     onAddService(value);
