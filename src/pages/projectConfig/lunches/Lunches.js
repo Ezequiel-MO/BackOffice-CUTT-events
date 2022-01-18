@@ -3,10 +3,8 @@ import SaveButton from "../../../ui/buttons/saveButton/SaveButton";
 import ProjectSelector from "../../../ui/Select/ProjectSelector";
 import styles from "../configStyles.module.css";
 import useScheduleProjectForm from "../useScheduleProjectForm";
-import { useLocation } from "react-router-dom";
+
 export const Lunches = () => {
-  const { state } = useLocation();
-  console.log("location", state);
   const {
     restaurantOptions,
     storeSelectedValues,

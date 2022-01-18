@@ -38,6 +38,6 @@ export const {
   SET_DINNER_EVENTS,
 } = dayProgramSlice.actions;
 
-export const selectDate = (state) => state.dayProgram.date;
+export const selectDayProgram = (state) => state.dayProgram.dayProgram;
 
 export default dayProgramSlice.reducer;

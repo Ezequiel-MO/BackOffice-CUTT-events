@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from "react";
+import { useState, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectProjectStatus } from "../../features/ProjectStatusSlice";
 import { useAxiosFetch } from "../../hooks/useAxiosFetch";
@@ -25,6 +25,7 @@ import {
   SET_DINNER_EVENTS,
   SET_LUNCH_EVENTS,
   SET_MORNING_EVENTS,
+  selectDayProgram,
 } from "../../features/DayProgramSlice";
 
 const useScheduleProjectForm = () => {
@@ -32,13 +33,13 @@ const useScheduleProjectForm = () => {
   const [schedule, setSchedule] = useState([]);
   const [showSubMenu, setShowSubMenu] = useState(false);
   const [transferVendorsInACity, setTransferVendorsInACity] = useState([]);
-  const [dayProgram] = useState({});
   const [selectedOptions, dispatch] = useReducer(
     eventOptionsReducer,
     optionsInitialState
   );
 
-  const [counter] = useState(1);
+  const [counter, setCounter] = useState(1);
+  const dayProgram = useSelector(selectDayProgram);
 
   const { vendorOptions: restaurantOptions } = useGetVendors("restaurants");
   const { vendorOptions: transferOptions } = useGetVendors("transfers");
@@ -68,14 +69,12 @@ const useScheduleProjectForm = () => {
     }
   };
 
+  const totalDays =
+    projectByCode &&
+    computeTotalDays(projectByCode.arrivalDay, projectByCode.departureDay);
+
   const handleTransferSubmit = (e, eventOfTheDay) => {
     e.preventDefault();
-
-    const totalDays = computeTotalDays(
-      projectByCode.arrivalDay,
-      projectByCode.departureDay
-    );
-
     if (
       company &&
       vehicleSize &&
@@ -99,7 +98,7 @@ const useScheduleProjectForm = () => {
           transfersArr.push(TransferObjToAdd);
         }
       }
-
+      dispatch_dayProgram(SET_DATE(whichDay(counter, totalDays)));
       if (eventOfTheDay === "morningEvents") {
         const morningEventsPayload = findSelectedOptions(
           selectedOptions["morning-event"],
@@ -111,7 +110,6 @@ const useScheduleProjectForm = () => {
           };
         });
 
-        dispatch_dayProgram(SET_DATE(whichDay(counter, totalDays)));
         dispatch_dayProgram(SET_MORNING_EVENTS(morningEventsPayload));
         setTimeout(() => {
           navigate("/lunches");
@@ -163,35 +161,18 @@ const useScheduleProjectForm = () => {
             transfer: transfersArr,
           };
         });
-
         dispatch_dayProgram(SET_DINNER_EVENTS(dinnerEventsPayload));
-        setTimeout(() => {
-          navigate("/morning-events");
-        }, 1000);
+        if (counter < totalDays) {
+          setCounter(counter + 1);
+          setTimeout(() => {
+            navigate("/morning-events");
+          }, 1000);
+        } else if (counter === totalDays) {
+          alert("You have reached the end of the project");
+        }
       }
     }
   };
-
-  /*  useEffect(() => {
-    if (counter < totalDays) {
-      dispatch({
-        type: "clear",
-      });
-      setCounter((prevState) => prevState + 1);
-    } else if (counter === totalDays) {
-      navigate({
-        pathname: "/schedule-check",
-        state: schedule,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [schedule]); */
-
-  useEffect(() => {
-    setSchedule([...schedule, dayProgram]);
-    console.log("super console log", dayProgram, schedule);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dayProgram]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
