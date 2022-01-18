@@ -24,6 +24,9 @@ export const dayProgramSlice = createSlice({
     SET_AFTERNOON_EVENTS: (state, action) => {
       state.dayProgram.afternoonEvents = action.payload;
     },
+    SET_DINNER_EVENTS: (state, action) => {
+      state.dayProgram.dinners = action.payload;
+    },
   },
 });
 
@@ -32,6 +35,7 @@ export const {
   SET_MORNING_EVENTS,
   SET_LUNCH_EVENTS,
   SET_AFTERNOON_EVENTS,
+  SET_DINNER_EVENTS,
 } = dayProgramSlice.actions;
 
 export const selectDate = (state) => state.dayProgram.date;

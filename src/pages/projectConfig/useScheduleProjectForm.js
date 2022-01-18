@@ -22,6 +22,7 @@ import {
 import {
   SET_AFTERNOON_EVENTS,
   SET_DATE,
+  SET_DINNER_EVENTS,
   SET_LUNCH_EVENTS,
   SET_MORNING_EVENTS,
 } from "../../features/DayProgramSlice";
@@ -146,8 +147,26 @@ const useScheduleProjectForm = () => {
         });
 
         dispatch_dayProgram(SET_AFTERNOON_EVENTS(afternoonEventsPayload));
+
         setTimeout(() => {
           navigate("/dinners");
+        }, 1000);
+      }
+
+      if (eventOfTheDay === "dinners") {
+        const dinnerEventsPayload = findSelectedOptions(
+          selectedOptions.dinner,
+          restaurantOptions
+        ).map((item) => {
+          return {
+            ...item,
+            transfer: transfersArr,
+          };
+        });
+
+        dispatch_dayProgram(SET_DINNER_EVENTS(dinnerEventsPayload));
+        setTimeout(() => {
+          navigate("/morning-events");
         }, 1000);
       }
     }
