@@ -20,6 +20,7 @@ import {
   selectVehicleSize,
 } from "../../features/TransfersSlice";
 import {
+  SET_AFTERNOON_EVENTS,
   SET_DATE,
   SET_LUNCH_EVENTS,
   SET_MORNING_EVENTS,
@@ -129,7 +130,24 @@ const useScheduleProjectForm = () => {
 
         dispatch_dayProgram(SET_LUNCH_EVENTS(lunchPayload));
         setTimeout(() => {
-          navigate("/afernoon-events");
+          navigate("/afternoon-events");
+        }, 1000);
+      }
+
+      if (eventOfTheDay === "afternoonEvents") {
+        const afternoonEventsPayload = findSelectedOptions(
+          selectedOptions["afternoon-event"],
+          eventOptions
+        ).map((item) => {
+          return {
+            ...item,
+            transfer: transfersArr,
+          };
+        });
+
+        dispatch_dayProgram(SET_AFTERNOON_EVENTS(afternoonEventsPayload));
+        setTimeout(() => {
+          navigate("/dinners");
         }, 1000);
       }
     }
