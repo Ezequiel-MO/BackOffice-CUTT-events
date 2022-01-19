@@ -1,4 +1,4 @@
-import { useState, useReducer } from "react";
+import { useState, useReducer, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectProjectStatus } from "../../features/ProjectStatusSlice";
 import { useAxiosFetch } from "../../hooks/useAxiosFetch";
@@ -11,6 +11,7 @@ import {
   computeTotalDays,
   findSelectedOptions,
   findUniqueVendorsPerCity,
+  PostToEndpoint,
   whichDay,
 } from "../../helper/HelperFunctions/HelperFunctions";
 import {
@@ -19,16 +20,15 @@ import {
   selectTransferCounter,
   selectVehicleSize,
 } from "../../features/TransfersSlice";
-import {
-  SET_AFTERNOON_EVENTS,
-  SET_DATE,
-  SET_DINNER_EVENTS,
-  SET_LUNCH_EVENTS,
-  SET_MORNING_EVENTS,
-  selectDayProgram,
-} from "../../features/DayProgramSlice";
 import { INCREMENT, selectDayCounter } from "../../features/DayCounterSlice";
-import { ADD_DAY } from "../../features/ScheduleSlice";
+import {
+  ADD_DAY,
+  selectSchedule,
+  UPDATE_AFTERNOON,
+  UPDATE_DINNER,
+  UPDATE_LUNCH,
+  UPDATE_MORNING,
+} from "../../features/ScheduleSlice";
 
 const useScheduleProjectForm = () => {
   const navigate = useNavigate();
@@ -39,9 +39,6 @@ const useScheduleProjectForm = () => {
     optionsInitialState
   );
 
-  const dayCounter = useSelector(selectDayCounter);
-  const dayProgram = useSelector(selectDayProgram);
-
   const { vendorOptions: restaurantOptions } = useGetVendors("restaurants");
   const { vendorOptions: transferOptions } = useGetVendors("transfers");
   const { vendorOptions: eventOptions } = useGetVendors("events");
@@ -49,11 +46,13 @@ const useScheduleProjectForm = () => {
   const {
     data: { project: projectByCode },
   } = useAxiosFetch(`${baseURL}/project/${projectStatus}`);
+  const [evaluate, setEvaluate] = useState(false);
   const company = useSelector(selectCompany);
   const vehicleSize = useSelector(selectVehicleSize);
   const typeOfService = useSelector(selectServiceType);
   const transferCounter = useSelector(selectTransferCounter);
-  const dispatch_dayProgram = useDispatch();
+  const dayCounter = useSelector(selectDayCounter);
+  const schedule = useSelector(selectSchedule);
   const dispatch_dayCounter = useDispatch();
   const dispatch_schedule = useDispatch();
   const storeSelectedValues = (array, action) => {
@@ -71,6 +70,10 @@ const useScheduleProjectForm = () => {
       });
     }
   };
+
+  const totalDays =
+    projectByCode &&
+    computeTotalDays(projectByCode.arrivalDay, projectByCode.departureDay);
 
   const handleTransferSubmit = (e, eventOfTheDay) => {
     e.preventDefault();
@@ -98,11 +101,15 @@ const useScheduleProjectForm = () => {
         }
       }
 
-      const totalDays =
-        projectByCode &&
-        computeTotalDays(projectByCode.arrivalDay, projectByCode.departureDay);
-
       if (eventOfTheDay === "morningEvents") {
+        const newDay = {
+          date: whichDay(dayCounter, totalDays),
+          morningEvents: [],
+          lunch: [],
+          afternoonEvents: [],
+          dinner: [],
+        };
+        dispatch_schedule(ADD_DAY(newDay));
         const morningEventsPayload = findSelectedOptions(
           selectedOptions["morning-event"],
           eventOptions
@@ -112,8 +119,12 @@ const useScheduleProjectForm = () => {
             transfer: transfersArr,
           };
         });
-        dispatch_dayProgram(SET_DATE(whichDay(dayCounter, totalDays)));
-        dispatch_dayProgram(SET_MORNING_EVENTS(morningEventsPayload));
+        dispatch_schedule(
+          UPDATE_MORNING({
+            date: whichDay(dayCounter, totalDays),
+            morningEvents: morningEventsPayload,
+          })
+        );
         setTimeout(() => {
           navigate("/lunches");
         }, 1000);
@@ -130,7 +141,12 @@ const useScheduleProjectForm = () => {
           };
         });
 
-        dispatch_dayProgram(SET_LUNCH_EVENTS(lunchPayload));
+        dispatch_schedule(
+          UPDATE_LUNCH({
+            date: whichDay(dayCounter, totalDays),
+            lunch: lunchPayload,
+          })
+        );
         setTimeout(() => {
           navigate("/afternoon-events");
         }, 1000);
@@ -147,14 +163,19 @@ const useScheduleProjectForm = () => {
           };
         });
 
-        dispatch_dayProgram(SET_AFTERNOON_EVENTS(afternoonEventsPayload));
+        dispatch_schedule(
+          UPDATE_AFTERNOON({
+            date: whichDay(dayCounter, totalDays),
+            afternoonEvents: afternoonEventsPayload,
+          })
+        );
 
         setTimeout(() => {
           navigate("/dinners");
         }, 1000);
       }
 
-      if (eventOfTheDay === "dinners") {
+      if (eventOfTheDay === "dinner") {
         const dinnerEventsPayload = findSelectedOptions(
           selectedOptions.dinner,
           restaurantOptions
@@ -164,22 +185,39 @@ const useScheduleProjectForm = () => {
             transfer: transfersArr,
           };
         });
-        dispatch_dayProgram(SET_DINNER_EVENTS(dinnerEventsPayload));
-        dispatch_schedule(ADD_DAY(dayProgram));
-        if (dayCounter < totalDays) {
-          dispatch_dayCounter(INCREMENT());
-          dispatch_dayProgram(SET_DATE(whichDay(dayCounter, totalDays)));
-          setTimeout(() => {
-            navigate("/morning-events");
-          }, 1000);
-        } else if (dayCounter === totalDays) {
-          setTimeout(() => {
-            navigate("/");
-          }, 1000);
-        }
+
+        dispatch_schedule(
+          UPDATE_DINNER({
+            date: whichDay(dayCounter, totalDays),
+            dinner: dinnerEventsPayload,
+          })
+        );
+        setEvaluate(true);
       }
     }
   };
+
+  useEffect(() => {
+    if (evaluate === true) {
+      if (dayCounter < totalDays) {
+        alert(
+          "You have added all the events for today. Please proceed to the next day"
+        );
+        dispatch_dayCounter(INCREMENT());
+        setEvaluate(false);
+        setTimeout(() => {
+          navigate("/morning-events");
+        }, 1000);
+      } else if (dayCounter === totalDays) {
+        alert("You have reached the end of your trip");
+        PostToEndpoint(schedule, `${baseURL}/addSchedule/${projectByCode._id}`);
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [evaluate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

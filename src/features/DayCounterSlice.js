@@ -6,7 +6,7 @@ export const dayCounterSlice = createSlice({
     dayCounter: 1,
   },
   reducers: {
-    INCREMENT: (state, action) => {
+    INCREMENT: (state) => {
       state.dayCounter = state.dayCounter + 1;
     },
   },
