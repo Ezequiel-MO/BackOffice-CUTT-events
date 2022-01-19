@@ -36,7 +36,7 @@ export const AfternoonEvents = () => {
             companies={transferVendorsInACity}
             transferOptions={transferOptions}
             handleTransferSubmit={handleTransferSubmit}
-            eventOfTheDay='afternoonEvents'
+            eventOfTheDay='afternoon-event'
           />
         )}
       </div>

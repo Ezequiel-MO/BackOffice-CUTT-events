@@ -7,8 +7,8 @@ export const dayProgramSlice = createSlice({
       date: "",
       morningEvents: [],
       afternoonEvents: [],
-      lunches: [],
-      dinners: [],
+      lunch: [],
+      dinner: [],
     },
   },
   reducers: {
@@ -19,13 +19,13 @@ export const dayProgramSlice = createSlice({
       state.dayProgram.morningEvents = action.payload;
     },
     SET_LUNCH_EVENTS: (state, action) => {
-      state.dayProgram.lunches = action.payload;
+      state.dayProgram.lunch = action.payload;
     },
     SET_AFTERNOON_EVENTS: (state, action) => {
       state.dayProgram.afternoonEvents = action.payload;
     },
     SET_DINNER_EVENTS: (state, action) => {
-      state.dayProgram.dinners = action.payload;
+      state.dayProgram.dinner = action.payload;
     },
   },
 });
