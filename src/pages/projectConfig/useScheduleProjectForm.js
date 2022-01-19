@@ -73,9 +73,6 @@ const useScheduleProjectForm = () => {
   };
 
   const handleTransferSubmit = (e, eventOfTheDay) => {
-    const totalDays =
-      projectByCode &&
-      computeTotalDays(projectByCode.arrivalDay, projectByCode.departureDay);
     e.preventDefault();
     if (
       company &&
@@ -100,6 +97,10 @@ const useScheduleProjectForm = () => {
           transfersArr.push(TransferObjToAdd);
         }
       }
+
+      const totalDays =
+        projectByCode &&
+        computeTotalDays(projectByCode.arrivalDay, projectByCode.departureDay);
 
       if (eventOfTheDay === "morningEvents") {
         const morningEventsPayload = findSelectedOptions(
