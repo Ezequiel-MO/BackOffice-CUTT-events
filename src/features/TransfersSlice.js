@@ -4,9 +4,13 @@ export const transfersSlice = createSlice({
   name: "transfers",
   initialState: {
     counter: 0,
-    company: "Select a Company",
-    vehicleSize: "Select Size of Vehicle",
-    typeOfService: "Select Type of Service",
+    company: JSON.parse(localStorage.getItem("company")) || "Select a Company",
+    vehicleSize:
+      JSON.parse(localStorage.getItem("vehicleSize")) ||
+      "Select Size of Vehicle",
+    typeOfService:
+      JSON.parse(localStorage.getItem("typeOfService")) ||
+      "Select Type of Service",
   },
   reducers: {
     SET_COUNTER: (state, action) => {

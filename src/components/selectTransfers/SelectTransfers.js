@@ -8,6 +8,7 @@ import {
   selectCompany,
   selectVehicleSize,
   selectTransferCounter,
+  selectServiceType,
   SET_COUNTER,
 } from "../../features/TransfersSlice";
 import {
@@ -26,21 +27,25 @@ const SelectTransfers = ({
   const [serviceOptions, setServiceOptions] = useState([]);
   const dispatch = useDispatch();
   const company = useSelector(selectCompany);
+  const typeOfService = useSelector(selectServiceType);
   const vehicleSize = useSelector(selectVehicleSize);
   const counter = useSelector(selectTransferCounter);
 
   const handleCompanyChange = (e) => {
     const { value } = e.target;
+    localStorage.setItem("company", value);
     dispatch(SET_COMPANY(value));
   };
 
   const handleCapacityChange = (e) => {
     const { value } = e.target;
+    localStorage.setItem("vehicleSize", value);
     dispatch(SET_VEHICLE_SIZE(value));
   };
 
   const handleServiceChange = (e) => {
     const { value } = e.target;
+    localStorage.setItem("typeOfService", value);
     dispatch(SET_TYPE_OF_SERVICE(value));
   };
 
@@ -82,7 +87,7 @@ const SelectTransfers = ({
             <Icon icon='akar-icons:plus' color='rgba(238, 170, 85, 0.6)' />
           </button>
         </div>
-        <select onChange={handleCompanyChange}>
+        <select onChange={handleCompanyChange} value={company}>
           <option value=''>Select a company</option>
           {companies?.map((company) => (
             <option key={company} value={company}>
@@ -90,7 +95,7 @@ const SelectTransfers = ({
             </option>
           ))}
         </select>
-        <select onChange={handleCapacityChange}>
+        <select onChange={handleCapacityChange} value={vehicleSize}>
           <option value=''>Select Size of vehicle</option>
           {capacities?.map((capacity) => (
             <option key={capacity} value={capacity}>
@@ -98,7 +103,7 @@ const SelectTransfers = ({
             </option>
           ))}
         </select>
-        <select onChange={handleServiceChange}>
+        <select onChange={handleServiceChange} value={typeOfService}>
           <option value=''>Select Type of Service</option>
           {serviceOptions?.map((option) => (
             <option key={option} value={option}>
