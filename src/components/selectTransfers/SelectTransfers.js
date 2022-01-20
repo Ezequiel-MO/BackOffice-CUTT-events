@@ -17,6 +17,7 @@ import {
   findUniqueVendorsPerCity,
 } from "../../helper/HelperFunctions/HelperFunctions";
 import { selectCity } from "../../features/ProjectStatusSlice";
+import styles from "./selectTransfersStyles.module.css";
 
 const SelectTransfers = ({
   transferOptions,
@@ -87,46 +88,57 @@ const SelectTransfers = ({
 
   return (
     <div>
-      <h2>
-        Transfers available in <span>{city}</span>
-      </h2>
+      <h3>Add Transfers to your services</h3>
       <form onSubmit={(e) => handleTransferSubmit(e, eventOfTheDay)}>
-        <div>
-          <button type='button' onClick={() => increase(-1)}>
-            <Icon icon='akar-icons:minus' color='rgba(238, 170, 85, 0.6)' />
-          </button>
-          {counter}
-          <button type='button' onClick={() => increase(1)}>
-            <Icon icon='akar-icons:plus' color='rgba(238, 170, 85, 0.6)' />
+        <div className={styles.transfers_container}>
+          <div className={styles.button_group}>
+            <button type='button' onClick={() => increase(-1)}>
+              <Icon
+                className={styles.icon}
+                icon='akar-icons:minus'
+                color='#ea5933'
+              />
+            </button>
+            <h2>{counter}</h2>
+            <button type='button' onClick={() => increase(1)}>
+              <Icon
+                className={styles.icon}
+                icon='akar-icons:plus'
+                color='#ea5933'
+              />
+            </button>
+          </div>
+          <div className={styles.box}>
+            <select onChange={handleCompanyChange} value={company}>
+              <option value=''>Select a company</option>
+              {companies?.map((company) => (
+                <option key={company} value={company}>
+                  {company}
+                </option>
+              ))}
+            </select>
+            <select onChange={handleCapacityChange} value={vehicleSize}>
+              <option value=''>Select Size of vehicle</option>
+              {capacities?.map((capacity) => (
+                <option key={capacity} value={capacity}>
+                  {capacity}
+                </option>
+              ))}
+            </select>
+            <select onChange={handleServiceChange} value={typeOfService}>
+              <option value=''>Select Type of Service</option>
+              {serviceOptions?.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <button className={styles.add_button} type='submit'>
+            Add
           </button>
         </div>
-        <select onChange={handleCompanyChange} value={company}>
-          <option value=''>Select a company</option>
-          {companies?.map((company) => (
-            <option key={company} value={company}>
-              {company}
-            </option>
-          ))}
-        </select>
-        <select onChange={handleCapacityChange} value={vehicleSize}>
-          <option value=''>Select Size of vehicle</option>
-          {capacities?.map((capacity) => (
-            <option key={capacity} value={capacity}>
-              {capacity}
-            </option>
-          ))}
-        </select>
-        <select onChange={handleServiceChange} value={typeOfService}>
-          <option value=''>Select Type of Service</option>
-          {serviceOptions?.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-        <button style={{ display: "block" }} type='submit'>
-          Add
-        </button>
       </form>
     </div>
   );
