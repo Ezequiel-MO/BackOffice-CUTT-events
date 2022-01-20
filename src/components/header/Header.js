@@ -28,6 +28,7 @@ const Header = () => {
             <img src={logo} alt='logo' onClick={handleImageClick} />
           </Link>
           <button
+            className={styles.header__button}
             onClick={handleOpenModalClick}
             disabled={
               projectStatus === "searching-project" ||

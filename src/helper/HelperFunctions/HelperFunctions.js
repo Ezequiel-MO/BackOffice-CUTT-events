@@ -1,7 +1,6 @@
 import { baseAPI } from "../axios";
 
 export const checkForDuplicates = (string, array) => {
-  console.log("checkForDuplicates", string, array);
   let codeIsUnique = true;
   for (let i = 0; i < array.length; i++) {
     if (array[i] === string) {
@@ -47,7 +46,6 @@ export const transformValues = (valuesObj) => {
 };
 
 export const fillFormData = (values, files) => {
-  console.log("values", values, typeof values);
   let formData = new FormData();
   for (let key in values) {
     formData.append(key, values[key]);
@@ -121,7 +119,7 @@ export const computeTotalDays = (startDate, endDate) => {
   const start = new Date(startDate);
   const end = new Date(endDate);
   const diffTime = Math.abs(end - start);
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
   return diffDays;
 };
 
@@ -149,4 +147,24 @@ export const findUniqueVendorsPerCity = (array, city) => {
 export const findUniqueCapacitiesPerVendor = (array, vendor) => {
   const filteredCapacities = array.filter((item) => item.company === vendor);
   return [...new Set(filteredCapacities.map((item) => item.vehicleCapacity))];
+};
+
+export const findServicesPerVendorAndCapacity = (array, vendor, capacity) => {
+  const filteredServices = array.filter(
+    (item) =>
+      item.company === vendor && item.vehicleCapacity === parseInt(capacity)
+  );
+  let services = [];
+  for (let key in filteredServices[0]) {
+    if (
+      key !== "city" &&
+      key !== "company" &&
+      key !== "vehicleCapacity" &&
+      key !== "_id" &&
+      key !== "__v"
+    ) {
+      services.push(key);
+    }
+  }
+  return services;
 };

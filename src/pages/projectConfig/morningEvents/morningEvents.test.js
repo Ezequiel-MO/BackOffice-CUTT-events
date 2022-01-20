@@ -11,11 +11,3 @@ describe("morning events form", () => {
   it("v- should store the info in an object, with the program of the day", () => {});
   it("should add the day to a schedule array", () => {});
 });
-
-describe("add Transfers", () => {
-  it("should render a transfer to be added to the activity", () => {});
-  it("the first select should filter transfer vendors by city in the project", () => {});
-  it("the second select should give options for kind of service", () => {});
-  it("the third select should give options for bus capacity", () => {});
-  it("a counter should give options for number of vehicles", () => {});
-});

@@ -20,11 +20,12 @@ const Tabs = ({ hotels }) => {
   } = useAxiosFetch(`${baseURL}/project/${projectStatus}`);
 
   useEffect(() => {
-    if (hotelRates.length === 0) {
+    if (hotelRates.length === 0 && projectByCode) {
       PostToEndpoint(hotelsArr, `/addHotels/${projectByCode._id}`);
+      navigate("/morning-events");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hotelRates]);
+  }, [hotelRates, hotelsArr]);
 
   useEffect(() => {
     const filteredHotels = hotels?.filter((hotel) => {
