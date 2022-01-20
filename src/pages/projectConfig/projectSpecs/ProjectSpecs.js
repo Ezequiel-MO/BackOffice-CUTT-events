@@ -7,11 +7,15 @@ import { checkCodeIsUnique } from "../../../helper/HelperFunctions/HelperFunctio
 import { useAxiosFetch } from "../../../hooks/useAxiosFetch";
 import { baseURL, baseAPI } from "../../../helper/axios.js";
 import { useDispatch } from "react-redux";
-import { SET_PROJECT_STATUS } from "../../../features/ProjectStatusSlice";
+import {
+  SET_CITY,
+  SET_PROJECT_STATUS,
+} from "../../../features/ProjectStatusSlice";
 import "./styles.css";
 
 export const ProjectSpecs = () => {
   const dispatch_ProjectStatus = useDispatch();
+
   const navigate = useNavigate();
   const {
     data: { projects: DBprojects },
@@ -27,6 +31,7 @@ export const ProjectSpecs = () => {
       .then((res) => console.log("res=>", res))
       .catch((err) => console.log(err));
     dispatch_ProjectStatus(SET_PROJECT_STATUS(project["code"]));
+    dispatch_ProjectStatus(SET_CITY(project["groupLocation"]));
     navigate("/hotels");
   };
 

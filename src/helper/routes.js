@@ -5,6 +5,8 @@ import {
   Hotels,
   Lunches,
   ProjectSpecs,
+  TransfersIn,
+  TransfersOut,
 } from "../pages/projectConfig";
 import {
   HotelsMasterForm,
@@ -49,6 +51,16 @@ export const routes = [
     path: "/dinners",
     Component: Dinners,
     name: "dinners",
+  },
+  {
+    path: "/transfers-in",
+    Component: TransfersIn,
+    name: "transfersIn",
+  },
+  {
+    path: "/transfers-out",
+    Component: TransfersOut,
+    name: "transfersOut",
   },
   {
     path: "/hotels-master-form",

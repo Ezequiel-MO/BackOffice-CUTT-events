@@ -9,8 +9,6 @@ export const AfternoonEvents = () => {
     handleSubmit,
     eventOptions,
     storeSelectedValues,
-    projectByCode,
-    transferVendorsInACity,
     handleTransferSubmit,
     transferOptions,
     showSubMenu,
@@ -32,8 +30,6 @@ export const AfternoonEvents = () => {
         </form>
         {showSubMenu && (
           <SelectTransfers
-            city={projectByCode.groupLocation}
-            companies={transferVendorsInACity}
             transferOptions={transferOptions}
             handleTransferSubmit={handleTransferSubmit}
             eventOfTheDay='afternoonEvents'

@@ -10,7 +10,6 @@ import { optionsInitialState } from "./projectFormReducer";
 import {
   computeTotalDays,
   findSelectedOptions,
-  findUniqueVendorsPerCity,
   PostToEndpoint,
   whichDay,
 } from "../../helper/HelperFunctions/HelperFunctions";
@@ -28,12 +27,14 @@ import {
   UPDATE_DINNER,
   UPDATE_LUNCH,
   UPDATE_MORNING,
+  UPDATE_TRANSFER_IN,
+  UPDATE_TRANSFER_OUT,
+  /*   UPDATE_TRANSFER_OUT, */
 } from "../../features/ScheduleSlice";
 
 const useScheduleProjectForm = () => {
   const navigate = useNavigate();
   const [showSubMenu, setShowSubMenu] = useState(false);
-  const [transferVendorsInACity, setTransferVendorsInACity] = useState([]);
   const [selectedOptions, dispatch] = useReducer(
     eventOptionsReducer,
     optionsInitialState
@@ -47,6 +48,7 @@ const useScheduleProjectForm = () => {
     data: { project: projectByCode },
   } = useAxiosFetch(`${baseURL}/project/${projectStatus}`);
   const [evaluate, setEvaluate] = useState(false);
+  const [post, setPost] = useState(false);
   const company = useSelector(selectCompany);
   const vehicleSize = useSelector(selectVehicleSize);
   const typeOfService = useSelector(selectServiceType);
@@ -101,6 +103,28 @@ const useScheduleProjectForm = () => {
         }
       }
 
+      if (eventOfTheDay === "transfers-in") {
+        dispatch_schedule(
+          UPDATE_TRANSFER_IN({
+            date: whichDay(dayCounter, totalDays),
+            transfer_in: transfersArr,
+          })
+        );
+        setTimeout(() => {
+          navigate("/transfers-out");
+        }, 1000);
+      }
+
+      if (eventOfTheDay === "transfers-out") {
+        dispatch_schedule(
+          UPDATE_TRANSFER_OUT({
+            date: whichDay(dayCounter, totalDays),
+            transfer_out: transfersArr,
+          })
+        );
+        setPost(true);
+      }
+
       if (eventOfTheDay === "morningEvents") {
         const newDay = {
           date: whichDay(dayCounter, totalDays),
@@ -108,6 +132,8 @@ const useScheduleProjectForm = () => {
           lunch: [],
           afternoonEvents: [],
           dinner: [],
+          transfer_in: [],
+          transfer_out: [],
         };
         dispatch_schedule(ADD_DAY(newDay));
         const morningEventsPayload = findSelectedOptions(
@@ -196,6 +222,16 @@ const useScheduleProjectForm = () => {
       }
     }
   };
+  useEffect(() => {
+    if (post) {
+      PostToEndpoint(schedule, `${baseURL}/addSchedule/${projectByCode._id}`);
+      alert("Schedule has been successfully added");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [post]);
 
   useEffect(() => {
     if (evaluate === true) {
@@ -209,10 +245,8 @@ const useScheduleProjectForm = () => {
           navigate("/morning-events");
         }, 1000);
       } else if (dayCounter === totalDays) {
-        alert("You have reached the end of your trip");
-        PostToEndpoint(schedule, `${baseURL}/addSchedule/${projectByCode._id}`);
         setTimeout(() => {
-          navigate("/");
+          navigate("/transfers-in");
         }, 1000);
       }
     }
@@ -221,12 +255,7 @@ const useScheduleProjectForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const uniqueTransferCompaniesPerCity = findUniqueVendorsPerCity(
-      transferOptions,
-      projectByCode.groupLocation
-    );
     setShowSubMenu(true);
-    setTransferVendorsInACity(uniqueTransferCompaniesPerCity);
   };
 
   return {
@@ -239,7 +268,6 @@ const useScheduleProjectForm = () => {
     whichDay,
     selectedOptions,
     showSubMenu,
-    transferVendorsInACity,
     handleTransferSubmit,
   };
 };

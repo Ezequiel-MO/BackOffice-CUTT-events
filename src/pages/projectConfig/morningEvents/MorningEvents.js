@@ -7,11 +7,9 @@ import SelectTransfers from "../../../components/selectTransfers/SelectTransfers
 export const MorningEvents = () => {
   const {
     handleSubmit,
-    projectByCode,
     eventOptions,
     transferOptions,
     storeSelectedValues,
-    transferVendorsInACity,
     showSubMenu,
     handleTransferSubmit,
   } = useScheduleProjectForm();
@@ -32,8 +30,6 @@ export const MorningEvents = () => {
         </form>
         {showSubMenu && (
           <SelectTransfers
-            city={projectByCode.groupLocation}
-            companies={transferVendorsInACity}
             transferOptions={transferOptions}
             handleTransferSubmit={handleTransferSubmit}
             eventOfTheDay='morningEvents'

@@ -14,22 +14,35 @@ import {
 import {
   findServicesPerVendorAndCapacity,
   findUniqueCapacitiesPerVendor,
+  findUniqueVendorsPerCity,
 } from "../../helper/HelperFunctions/HelperFunctions";
+import { selectCity } from "../../features/ProjectStatusSlice";
 
 const SelectTransfers = ({
-  city,
-  companies,
   transferOptions,
   handleTransferSubmit,
   eventOfTheDay,
 }) => {
+  const [companies, setCompanies] = useState([]);
   const [capacities, setCapacities] = useState([]);
   const [serviceOptions, setServiceOptions] = useState([]);
   const dispatch = useDispatch();
+  const city = useSelector(selectCity);
   const company = useSelector(selectCompany);
   const typeOfService = useSelector(selectServiceType);
   const vehicleSize = useSelector(selectVehicleSize);
   const counter = useSelector(selectTransferCounter);
+
+  useEffect(() => {
+    if (city) {
+      const uniqueTransferCompaniesPerCity = findUniqueVendorsPerCity(
+        transferOptions,
+        city
+      );
+      setCompanies(uniqueTransferCompaniesPerCity);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [city]);
 
   const handleCompanyChange = (e) => {
     const { value } = e.target;

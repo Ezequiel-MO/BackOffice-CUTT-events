@@ -57,6 +57,30 @@ export const scheduleSlice = createSlice({
         return day;
       });
     },
+    UPDATE_TRANSFER_IN: (state, action) => {
+      const { date, transfer_in } = action.payload;
+      state.schedule = state.schedule.map((day) => {
+        if (day.date === date) {
+          return {
+            ...day,
+            transfer_in,
+          };
+        }
+        return day;
+      });
+    },
+    UPDATE_TRANSFER_OUT: (state, action) => {
+      const { date, transfer_out } = action.payload;
+      state.schedule = state.schedule.map((day) => {
+        if (day.date === date) {
+          return {
+            ...day,
+            transfer_out,
+          };
+        }
+        return day;
+      });
+    },
   },
 });
 
@@ -66,6 +90,8 @@ export const {
   UPDATE_LUNCH,
   UPDATE_AFTERNOON,
   UPDATE_DINNER,
+  UPDATE_TRANSFER_IN,
+  UPDATE_TRANSFER_OUT,
 } = scheduleSlice.actions;
 
 export const selectSchedule = (state) => state.schedule.schedule;

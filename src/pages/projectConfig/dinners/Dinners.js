@@ -7,17 +7,14 @@ import SelectTransfers from "../../../components/selectTransfers/SelectTransfers
 export const Dinners = () => {
   const {
     handleSubmit,
-    projectByCode,
     restaurantOptions,
     transferOptions,
     storeSelectedValues,
-    transferVendorsInACity,
     showSubMenu,
     handleTransferSubmit,
   } = useScheduleProjectForm();
   return (
     <div>
-      {projectByCode && <p>Date: {projectByCode.arrivalDay}</p>}
       <div className={styles.config__container}>
         <form onSubmit={handleSubmit}>
           <ProjectSelector
@@ -33,8 +30,6 @@ export const Dinners = () => {
         </form>
         {showSubMenu && (
           <SelectTransfers
-            city={projectByCode.groupLocation}
-            companies={transferVendorsInACity}
             transferOptions={transferOptions}
             handleTransferSubmit={handleTransferSubmit}
             eventOfTheDay='dinner'

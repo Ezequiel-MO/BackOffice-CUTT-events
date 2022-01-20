@@ -13,8 +13,6 @@ export const Lunches = () => {
     storeSelectedValues,
     showSubMenu,
     handleSubmit,
-    projectByCode,
-    transferVendorsInACity,
     transferOptions,
     handleTransferSubmit,
   } = useScheduleProjectForm();
@@ -34,8 +32,6 @@ export const Lunches = () => {
       </form>
       {showSubMenu && (
         <SelectTransfers
-          city={projectByCode.groupLocation}
-          companies={transferVendorsInACity}
           transferOptions={transferOptions}
           handleTransferSubmit={handleTransferSubmit}
           eventOfTheDay='lunch'
