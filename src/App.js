@@ -3,8 +3,21 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { routes } from "./helper/routes";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Header from "./components/header/Header";
+/* import { baseAPI } from "./helper/axios";
+import { useEffect } from "react"; */
 
 function App() {
+  /* clean /projects API */
+  /* useEffect(() => {
+    baseAPI
+      .get("/projects")
+      .then((res) =>
+        res.data.projects.map((project) =>
+          baseAPI.delete(`/project/${project._id}`)
+        )
+      );
+  }, []); */
+
   return (
     <BrowserRouter>
       <Header />

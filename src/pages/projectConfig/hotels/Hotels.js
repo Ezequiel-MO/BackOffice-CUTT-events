@@ -38,7 +38,7 @@ export const Hotels = () => {
   };
   return (
     <div className={styles.config__container}>
-      <form onSubmit={handleFormSubmit}>
+      <form className={styles.form} onSubmit={handleFormSubmit}>
         <ProjectSelector
           name='hotel'
           icon='bx:bx-hotel'
