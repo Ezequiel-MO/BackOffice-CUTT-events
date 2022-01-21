@@ -1,0 +1,37 @@
+
+form {
+    margin: 1rem;
+    width: 90rem;
+    height: 30rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.addService {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-start;
+}
+
+.addService select  {
+    width: 10rem;
+    height: 2.9rem;
+    margin-right: 1rem;
+}
+
+.addService button {
+    width: 10rem;
+    height: 2.9rem;
+}
+
+.listOfServices {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.listOfServices fieldset {
+    display: flex;
+    justify-content: space-between;
+   
+}

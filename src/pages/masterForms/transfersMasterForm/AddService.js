@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 const AddService = ({
+  className,
   onAddService,
   status,
   setStatus,
@@ -25,7 +26,7 @@ const AddService = ({
   };
 
   return (
-    <fieldset>
+    <fieldset className={className}>
       <legend>Vehicle Capacity:</legend>
       <select
         type='number'
@@ -45,9 +46,10 @@ const AddService = ({
       </select>
 
       <button
+        className='add_button '
         type='button'
         onClick={handleClick}
-        disabled={status === "typing"}
+        disabled={status === "typing" || value === 0}
       >
         Add Services
       </button>

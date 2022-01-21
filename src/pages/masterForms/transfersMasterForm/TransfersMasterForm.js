@@ -2,6 +2,7 @@ import AddService from "./AddService";
 import TransferCo from "./TransferCo";
 import ListOfServices from "./ListOfServices";
 import useTransfersMasterForm from "./useTransfersMasterForm";
+import styles from "./transfersMFStyles.module.css";
 
 export const TransfersMasterForm = () => {
   const {
@@ -24,6 +25,7 @@ export const TransfersMasterForm = () => {
           setCompanyValues={setCompanyValues}
         />
         <AddService
+          className={styles.addService}
           onAddService={handleAddService}
           status={status}
           setStatus={setStatus}
@@ -32,6 +34,7 @@ export const TransfersMasterForm = () => {
           setSubmitReady={setSubmitReady}
         />
         <ListOfServices
+          className={styles.listOfServices}
           services={services}
           companyValues={companyValues}
           setCompanyValues={setCompanyValues}
