@@ -3,8 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { routes } from "./helper/routes";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Header from "./components/header/Header";
-/* import { baseAPI } from "./helper/axios";
-import { useEffect } from "react"; */
+import { baseAPI } from "./helper/axios";
+import { useEffect } from "react";
+import axios from "axios";
 
 function App() {
   /* clean /projects API */
@@ -16,6 +17,22 @@ function App() {
           baseAPI.delete(`/project/${project._id}`)
         )
       );
+  }, []); */
+
+  /*   useEffect(() => {
+    baseAPI
+      .patch(
+        "/restaurants/618b830322ef8723f012c40c",
+        {
+          city: "San Francisco",
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then((res) => console.log(res));
   }, []); */
 
   return (

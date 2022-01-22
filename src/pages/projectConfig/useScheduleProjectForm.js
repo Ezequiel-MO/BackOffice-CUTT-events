@@ -106,7 +106,7 @@ const useScheduleProjectForm = () => {
       if (eventOfTheDay === "transfers-in") {
         dispatch_schedule(
           UPDATE_TRANSFER_IN({
-            date: whichDay(dayCounter, totalDays),
+            date: whichDay(1, totalDays),
             transfer_in: transfersArr,
           })
         );
