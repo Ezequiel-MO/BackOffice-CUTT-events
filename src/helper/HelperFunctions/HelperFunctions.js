@@ -62,13 +62,13 @@ export const checkVendorIsUnique = (code, vendorName, array) => {
   return codeIsUnique;
 };
 
-export const PostToEndpoint = (data, endpoint) => {
-  baseAPI
-    .post(endpoint, data)
-    .then((res) => {
-      console.log("res", res);
-    })
-    .catch((err) => console.log("error", err));
+export const PostToEndpoint = async (data, endpoint) => {
+  try {
+    const response = await baseAPI.post(endpoint, data);
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export const submitForm = (values, files, endpoint, options) => {

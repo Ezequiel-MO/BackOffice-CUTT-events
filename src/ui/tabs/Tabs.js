@@ -1,42 +1,51 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 import HotelRatesTable from "../../components/projectConfig/HotelRatesTable/HotelRatesTable";
-import { selectHotelRates } from "../../features/HotelRatesSlice";
-import { PostToEndpoint } from "../../helper/HelperFunctions/HelperFunctions";
-import { useAxiosFetch } from "../../hooks/useAxiosFetch";
-import { baseURL } from "../../helper/axios";
 import { selectProjectStatus } from "../../features/ProjectStatusSlice";
+import { selectHotelRates } from "../../features/HotelRatesSlice";
+import { baseAPI, baseURL } from "../../helper/axios";
+import { useAxiosFetch } from "../../hooks/useAxiosFetch";
+
 import "./tabStyles.css";
-import { useNavigate } from "react-router-dom";
 
 const Tabs = ({ hotels }) => {
-  const navigate = useNavigate();
   const [visibleTab, setVisibleTab] = useState(hotels[0]._id);
-  const [hotelRates, setHotelRates] = useState(hotels);
   const hotelsArr = useSelector(selectHotelRates);
+  const [filteredHotels, setFilteredHotels] = useState(hotels);
+  const navigate = useNavigate();
   const projectStatus = useSelector(selectProjectStatus);
   const {
     data: { project: projectByCode },
-  } = useAxiosFetch(`${baseURL}/project/${projectStatus}`);
+  } = useAxiosFetch(`${baseURL}/projects/${projectStatus}`);
+
+  const postToHotels = async () => {
+    try {
+      await baseAPI.post(`/addHotels/${projectByCode._id}`, hotelsArr);
+      alert("Thanks for adding hotels");
+      navigate("/morning-events");
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   useEffect(() => {
-    if (hotelRates.length === 0 && projectByCode) {
-      PostToEndpoint(hotelsArr, `/addHotels/${projectByCode._id}`);
-      navigate("/morning-events");
+    if (filteredHotels.length === 0 && projectByCode) {
+      postToHotels();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hotelRates, hotelsArr]);
+  }, [filteredHotels]);
 
   useEffect(() => {
     const filteredHotels = hotels?.filter((hotel) => {
       return !hotelsArr.find((hotelArr) => hotelArr._id === hotel._id);
     });
     setVisibleTab(filteredHotels.length > 0 ? filteredHotels[0]._id : null);
-    setHotelRates(filteredHotels);
+    setFilteredHotels(filteredHotels);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hotelsArr]);
 
-  const listTitles = hotelRates.map((hotel) => (
+  const listTitles = filteredHotels.map((hotel) => (
     <li
       key={hotel._id}
       onClick={() => setVisibleTab(hotel._id)}
@@ -48,7 +57,7 @@ const Tabs = ({ hotels }) => {
     </li>
   ));
 
-  const listContent = hotelRates.map((hotel) => (
+  const listContent = filteredHotels.map((hotel) => (
     <div
       key={hotel._id}
       className={
@@ -57,11 +66,13 @@ const Tabs = ({ hotels }) => {
           : "tab-content tab-content--hidden"
       }
     >
-      <HotelRatesTable hotel={hotel} />
+      <HotelRatesTable
+        hotel={hotel}
+        nrHotels={hotels.length}
+        postToHotels={postToHotels}
+      />
     </div>
   ));
-
-  if (hotelRates.length === 0) return <h1>Thanks for submitting</h1>;
 
   return (
     <div className='tabs'>
