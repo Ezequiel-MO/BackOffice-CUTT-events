@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import HotelRatesTable from "../../components/projectConfig/HotelRatesTable/HotelRatesTable";
 import { selectProjectStatus } from "../../features/ProjectStatusSlice";
 import { selectHotelRates } from "../../features/HotelRatesSlice";
