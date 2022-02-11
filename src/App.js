@@ -3,9 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { routes } from "./helper/routes";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Header from "./components/header/Header";
-import { baseAPI } from "./helper/axios";
+/* import { baseAPI } from "./helper/axios";
 import { useEffect } from "react";
-import axios from "axios";
+import axios from "axios"; */
 
 function App() {
   /* clean /projects API */

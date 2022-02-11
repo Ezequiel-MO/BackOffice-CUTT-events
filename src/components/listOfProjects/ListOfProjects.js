@@ -48,11 +48,16 @@ const ListOfProjects = ({ page = false }) => {
           />
           <button type='submit'>Search</button>
         </form>
-        <button onClick={handleCreateProject}>+ New Project</button>
+        <button className={styles.list__button} onClick={handleCreateProject}>
+          + New Project
+        </button>
       </div>
       <SortableProjectsTable project={project} />
       {!page && (
-        <button className={styles.list__cancelButton} onClick={handleCancel}>
+        <button
+          className={`${styles.list__cancelButton} ${styles.list__button}`}
+          onClick={handleCancel}
+        >
           Cancel
         </button>
       )}
