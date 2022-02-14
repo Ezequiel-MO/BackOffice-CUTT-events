@@ -7,12 +7,12 @@ import { TextInput } from "../../../ui/inputs/TextInput";
 import { TextAreaInput } from "../../../ui/inputs/TextAreaInput";
 import "../../masterForms/styles.css";
 import { submitForm } from "../../../helper/HelperFunctions/HelperFunctions";
-/* import { useNavigate } from "react-router-dom"; */
+import { useNavigate } from "react-router-dom";
 import useGetVendors from "../../../hooks/useGetVendors";
 
 export const EventsMasterForm = () => {
   const fileInput = useRef();
-  /* const navigate = useNavigate(); */
+  const navigate = useNavigate();
   const { vendorOptions: events } = useGetVendors("events");
   return (
     <>
@@ -30,7 +30,8 @@ export const EventsMasterForm = () => {
         }}
         onSubmit={(values) => {
           submitForm(values, fileInput.current.files, "events", events);
-          /* navigate("/"); */
+          alert("Thanks for creating a new event!");
+          navigate("/");
         }}
         validationSchema={Yup.object({
           name: Yup.string().required("Required"),

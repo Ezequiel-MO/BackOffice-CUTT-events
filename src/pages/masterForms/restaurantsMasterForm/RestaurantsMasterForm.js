@@ -7,12 +7,12 @@ import { TextInput } from "../../../ui/inputs/TextInput";
 import { TextAreaInput } from "../../../ui/inputs/TextAreaInput";
 import "../../masterForms/styles.css";
 import { submitForm } from "../../../helper/HelperFunctions/HelperFunctions";
-/* import { useNavigate } from "react-router-dom"; */
+import { useNavigate } from "react-router-dom";
 import useGetVendors from "../../../hooks/useGetVendors";
 
 export const RestaurantsMasterForm = () => {
   const fileInput = useRef();
-  /* const navigate = useNavigate(); */
+  const navigate = useNavigate();
   const { vendorOptions: restaurants } = useGetVendors("restaurants");
   return (
     <>
@@ -33,7 +33,8 @@ export const RestaurantsMasterForm = () => {
             "restaurants",
             restaurants
           );
-          /* navigate("/"); */
+          alert("Thanks for creating a new restaurant!");
+          navigate("/");
         }}
         validationSchema={Yup.object({
           name: Yup.string().required("Required"),

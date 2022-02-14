@@ -8,12 +8,12 @@ import { CheckboxInput } from "../../../ui/inputs/CheckboxInput";
 import { TextAreaInput } from "../../../ui/inputs/TextAreaInput";
 import "../../masterForms/styles.css";
 import { submitForm } from "../../../helper/HelperFunctions/HelperFunctions";
-/* import { useNavigate } from "react-router-dom"; */
+import { useNavigate } from "react-router-dom";
 import useGetVendors from "../../../hooks/useGetVendors";
 
 export const HotelsMasterForm = () => {
   const fileInput = useRef();
-  /* const navigate = useNavigate(); */
+  const navigate = useNavigate();
   const { vendorOptions: hotels } = useGetVendors("hotels");
 
   return (
@@ -38,7 +38,8 @@ export const HotelsMasterForm = () => {
         }}
         onSubmit={(values) => {
           submitForm(values, fileInput.current.files, "hotels", hotels);
-          /* navigate("/"); */
+          alert("Thanks for creating a new hotel!");
+          navigate("/");
         }}
         validationSchema={Yup.object({
           name: Yup.string().required("Required"),
