@@ -3,6 +3,7 @@ import {
   FormControl,
   Select,
   InputLabel,
+  MenuItem,
   Stack,
   Paper,
   Button,
@@ -148,11 +149,11 @@ const SelectTransfers = ({
                 labelId='company'
                 id='company'
               >
-                <option value=''>Select a company</option>
+                <MenuItem value=''>Select a company</MenuItem>
                 {companies?.map((company) => (
-                  <option key={company} value={company}>
+                  <MenuItem key={company} value={company}>
                     {company}
-                  </option>
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -168,11 +169,11 @@ const SelectTransfers = ({
                 labelId='vehicleSize'
                 id='vehicleSize'
               >
-                <option value=''>Select Size of vehicle</option>
+                <MenuItem value=''>Select Size of vehicle</MenuItem>
                 {capacities?.map((capacity) => (
-                  <option key={capacity} value={capacity}>
+                  <MenuItem key={capacity} value={capacity}>
                     {capacity}
-                  </option>
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -188,11 +189,11 @@ const SelectTransfers = ({
                 labelId='typeOfService'
                 id='typeOfService'
               >
-                <option value=''>Select Type of Service</option>
+                <MenuItem value=''>Select Type of Service</MenuItem>
                 {serviceOptions?.map((option) => (
-                  <option key={option} value={option}>
+                  <MenuItem key={option} value={option}>
                     {option}
-                  </option>
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
