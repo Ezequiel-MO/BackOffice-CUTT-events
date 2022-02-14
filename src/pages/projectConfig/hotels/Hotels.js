@@ -8,14 +8,30 @@ import { SaveButton } from "../../../ui/buttons/saveButton/SaveButton";
 import { findSelectedOptions } from "../../../helper/HelperFunctions/HelperFunctions";
 import styles from "../configStyles.module.css";
 import Tabs from "../../../ui/tabs/Tabs";
+import { selectCity } from "../../../features/ProjectStatusSlice";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 export const Hotels = () => {
+  const city = useSelector(selectCity);
   const { vendorOptions: hotelOptions } = useGetVendors("hotels");
+  const [hotelOptionsByCity, setHotelOptionsByCity] = useState([]);
   const [hotels, setHotels] = useState([]);
   const [selectedOptions, dispatch] = useReducer(
     eventOptionsReducer,
     optionsInitialState
   );
+
+  useEffect(() => {
+    if (city && hotelOptions) {
+      const hotelOptionsByCity = hotelOptions.filter(
+        (hotel) => hotel.city === city
+      );
+      setHotelOptionsByCity(hotelOptionsByCity);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [city]);
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setHotels(findSelectedOptions(selectedOptions.hotel, hotelOptions));
@@ -42,7 +58,7 @@ export const Hotels = () => {
         <ProjectSelector
           name='hotel'
           icon='bx:bx-hotel'
-          options={hotelOptions}
+          options={hotelOptionsByCity}
           placeholder='ex : Hotel Options'
           storeSelectedValues={storeSelectedValues}
         />

@@ -78,7 +78,7 @@ export const HotelsMasterForm = () => {
                   <TextInput
                     label='City'
                     name='city'
-                    placeholder='Restaurant City'
+                    placeholder='City'
                     type='text'
                   />
                 </div>
