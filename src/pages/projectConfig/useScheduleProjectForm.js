@@ -46,7 +46,7 @@ const useScheduleProjectForm = () => {
   const projectStatus = useSelector(selectProjectStatus);
   const {
     data: { project: projectByCode },
-  } = useAxiosFetch(`${baseURL}/project/${projectStatus}`);
+  } = useAxiosFetch(`${baseURL}/projects/${projectStatus}`);
   const [evaluate, setEvaluate] = useState(false);
   const [post, setPost] = useState(false);
   const company = useSelector(selectCompany);
