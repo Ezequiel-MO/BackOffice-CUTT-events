@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "@iconify/react";
+import { Button } from "@mui/material";
 import {
   SET_COMPANY,
   SET_VEHICLE_SIZE,
@@ -135,9 +136,9 @@ const SelectTransfers = ({
             </select>
           </div>
 
-          <button className={styles.add_button} type='submit'>
+          <Button variant='contained' color='inherit' type='submit'>
             Add
-          </button>
+          </Button>
         </div>
       </form>
     </div>
