@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
+import {
+  FormControl,
+  Select,
+  InputLabel,
+  Stack,
+  Paper,
+  Button,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "@iconify/react";
-import { Button } from "@mui/material";
+
 import {
   SET_COMPANY,
   SET_VEHICLE_SIZE,
@@ -91,55 +99,109 @@ const SelectTransfers = ({
     <div>
       <h3>Add Transfers to your services</h3>
       <form onSubmit={(e) => handleTransferSubmit(e, eventOfTheDay)}>
-        <div className={styles.transfers_container}>
-          <div className={styles.button_group}>
-            <button type='button' onClick={() => increase(-1)}>
+        <Paper
+          elevation={3}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-around",
+            padding: "1rem",
+            minWidth: "700px",
+            backgroundColor: "#f5f5f5",
+          }}
+        >
+          <Stack direction='row' spacing={2}>
+            <Button
+              variant='contained'
+              color='inherit'
+              onClick={() => increase(-1)}
+            >
               <Icon
                 className={styles.icon}
                 icon='akar-icons:minus'
                 color='#ea5933'
               />
-            </button>
+            </Button>
             <h2>{counter}</h2>
-            <button type='button' onClick={() => increase(1)}>
+            <Button
+              variant='contained'
+              color='inherit'
+              onClick={() => increase(1)}
+            >
               <Icon
                 className={styles.icon}
                 icon='akar-icons:plus'
                 color='#ea5933'
               />
-            </button>
-          </div>
-          <div className={styles.box}>
-            <select onChange={handleCompanyChange} value={company}>
-              <option value=''>Select a company</option>
-              {companies?.map((company) => (
-                <option key={company} value={company}>
-                  {company}
-                </option>
-              ))}
-            </select>
-            <select onChange={handleCapacityChange} value={vehicleSize}>
-              <option value=''>Select Size of vehicle</option>
-              {capacities?.map((capacity) => (
-                <option key={capacity} value={capacity}>
-                  {capacity}
-                </option>
-              ))}
-            </select>
-            <select onChange={handleServiceChange} value={typeOfService}>
-              <option value=''>Select Type of Service</option>
-              {serviceOptions?.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
+            </Button>
+          </Stack>
+          <Stack>
+            <FormControl>
+              <InputLabel id='company' sx={{ color: "#ea5933" }}>
+                Company
+              </InputLabel>
+              <Select
+                variant='standard'
+                onChange={handleCompanyChange}
+                className={styles.select}
+                value={company}
+                labelId='company'
+                id='company'
+              >
+                <option value=''>Select a company</option>
+                {companies?.map((company) => (
+                  <option key={company} value={company}>
+                    {company}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl>
+              <InputLabel id='vehicleSize' sx={{ color: "#ea5933" }}>
+                Vehicle Size
+              </InputLabel>
+              <Select
+                variant='standard'
+                onChange={handleCapacityChange}
+                className={styles.select}
+                value={vehicleSize}
+                labelId='vehicleSize'
+                id='vehicleSize'
+              >
+                <option value=''>Select Size of vehicle</option>
+                {capacities?.map((capacity) => (
+                  <option key={capacity} value={capacity}>
+                    {capacity}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl>
+              <InputLabel id='typeOfService' sx={{ color: "#ea5933" }}>
+                Type of Service
+              </InputLabel>
+              <Select
+                variant='standard'
+                onChange={handleServiceChange}
+                className={styles.select}
+                value={typeOfService}
+                labelId='typeOfService'
+                id='typeOfService'
+              >
+                <option value=''>Select Type of Service</option>
+                {serviceOptions?.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Stack>
 
           <Button variant='contained' color='inherit' type='submit'>
             Add
           </Button>
-        </div>
+        </Paper>
       </form>
     </div>
   );
