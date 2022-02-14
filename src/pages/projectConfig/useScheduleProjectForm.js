@@ -47,6 +47,8 @@ const useScheduleProjectForm = () => {
   const {
     data: { project: projectByCode },
   } = useAxiosFetch(`${baseURL}/projects/${projectStatus}`);
+  const [eventOptionsByCity, setEventOptionsByCity] = useState([]);
+  const [restaurantOptionsByCity, setRestaurantOptionsByCity] = useState([]);
   const [evaluate, setEvaluate] = useState(false);
   const [post, setPost] = useState(false);
   const company = useSelector(selectCompany);
@@ -57,6 +59,21 @@ const useScheduleProjectForm = () => {
   const schedule = useSelector(selectSchedule);
   const dispatch_dayCounter = useDispatch();
   const dispatch_schedule = useDispatch();
+
+  useEffect(() => {
+    if (projectByCode && eventOptions && restaurantOptions) {
+      const eventOptionsByCity = eventOptions.filter(
+        (eventOption) => eventOption.city === projectByCode.groupLocation
+      );
+      const restaurantOptionsByCity = restaurantOptions.filter(
+        (restaurantOption) =>
+          restaurantOption.city === projectByCode.groupLocation
+      );
+      setEventOptionsByCity(eventOptionsByCity);
+      setRestaurantOptionsByCity(restaurantOptionsByCity);
+    }
+  }, [projectByCode, eventOptions, restaurantOptions]);
+
   const storeSelectedValues = (array, action) => {
     if (action.action === "select-option" || action.action === "remove-value") {
       dispatch({
@@ -79,13 +96,7 @@ const useScheduleProjectForm = () => {
 
   const handleTransferSubmit = (e, eventOfTheDay) => {
     e.preventDefault();
-    if (
-      company &&
-      vehicleSize &&
-      typeOfService &&
-      transferOptions &&
-      transferCounter
-    ) {
+    if (company && vehicleSize && typeOfService && transferOptions) {
       const selectedOption = transferOptions.filter(
         (option) =>
           option.company === company &&
@@ -138,7 +149,7 @@ const useScheduleProjectForm = () => {
         dispatch_schedule(ADD_DAY(newDay));
         const morningEventsPayload = findSelectedOptions(
           selectedOptions["morning-event"],
-          eventOptions
+          eventOptionsByCity
         ).map((item) => {
           return {
             ...item,
@@ -159,7 +170,7 @@ const useScheduleProjectForm = () => {
       if (eventOfTheDay === "lunch") {
         const lunchPayload = findSelectedOptions(
           selectedOptions.lunch,
-          restaurantOptions
+          restaurantOptionsByCity
         ).map((item) => {
           return {
             ...item,
@@ -181,7 +192,7 @@ const useScheduleProjectForm = () => {
       if (eventOfTheDay === "afternoonEvents") {
         const afternoonEventsPayload = findSelectedOptions(
           selectedOptions["afternoon-event"],
-          eventOptions
+          eventOptionsByCity
         ).map((item) => {
           return {
             ...item,
@@ -204,7 +215,7 @@ const useScheduleProjectForm = () => {
       if (eventOfTheDay === "dinner") {
         const dinnerEventsPayload = findSelectedOptions(
           selectedOptions.dinner,
-          restaurantOptions
+          restaurantOptionsByCity
         ).map((item) => {
           return {
             ...item,
@@ -261,8 +272,8 @@ const useScheduleProjectForm = () => {
   return {
     handleSubmit,
     projectByCode,
-    eventOptions,
-    restaurantOptions,
+    eventOptionsByCity,
+    restaurantOptionsByCity,
     transferOptions,
     storeSelectedValues,
     whichDay,
