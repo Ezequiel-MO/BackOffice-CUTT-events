@@ -7,20 +7,22 @@ import SelectTransfers from "../../../components/selectTransfers/SelectTransfers
 export const MorningEvents = () => {
   const {
     handleSubmit,
-    eventOptions,
+    eventOptionsByCity,
     transferOptions,
     storeSelectedValues,
     showSubMenu,
     handleTransferSubmit,
   } = useScheduleProjectForm();
+
   return (
     <div>
       <div className={styles.config__container}>
         <form onSubmit={handleSubmit}>
           <ProjectSelector
             name='morning-event'
-            icon='vaadin:morning'
-            options={eventOptions}
+            icon='vaadin:
+            morning'
+            options={eventOptionsByCity}
             placeholder='ex : Event Options'
             storeSelectedValues={storeSelectedValues}
           />

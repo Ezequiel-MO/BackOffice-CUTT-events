@@ -7,7 +7,7 @@ import useScheduleProjectForm from "../useScheduleProjectForm";
 export const AfternoonEvents = () => {
   const {
     handleSubmit,
-    eventOptions,
+    eventOptionsByCity,
     storeSelectedValues,
     handleTransferSubmit,
     transferOptions,
@@ -20,7 +20,7 @@ export const AfternoonEvents = () => {
           <ProjectSelector
             name='afternoon-event'
             icon='ph:clock-afternoon-duotone'
-            options={eventOptions}
+            options={eventOptionsByCity}
             placeholder='ex : Afternoon Event Options'
             storeSelectedValues={storeSelectedValues}
           />

@@ -7,7 +7,7 @@ import SelectTransfers from "../../../components/selectTransfers/SelectTransfers
 export const Dinners = () => {
   const {
     handleSubmit,
-    restaurantOptions,
+    restaurantOptionsByCity,
     transferOptions,
     storeSelectedValues,
     showSubMenu,
@@ -20,7 +20,7 @@ export const Dinners = () => {
           <ProjectSelector
             name='dinner'
             icon='cil:dinner'
-            options={restaurantOptions}
+            options={restaurantOptionsByCity}
             placeholder='ex : Dinner Options'
             storeSelectedValues={storeSelectedValues}
           />

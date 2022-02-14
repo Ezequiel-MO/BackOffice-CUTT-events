@@ -3,26 +3,24 @@ import SaveButton from "../../../ui/buttons/saveButton/SaveButton";
 import ProjectSelector from "../../../ui/Select/ProjectSelector";
 import styles from "../configStyles.module.css";
 import useScheduleProjectForm from "../useScheduleProjectForm";
-import { useLocation } from "react-router-dom";
 
 export const Lunches = () => {
-  const { state } = useLocation();
-  console.log("Lunches", state);
   const {
-    restaurantOptions,
+    restaurantOptionsByCity,
     storeSelectedValues,
     showSubMenu,
     handleSubmit,
     transferOptions,
     handleTransferSubmit,
   } = useScheduleProjectForm();
+
   return (
     <div className={styles.config__container}>
       <form onSubmit={handleSubmit}>
         <ProjectSelector
           name='lunch'
           icon='carbon:restaurant'
-          options={restaurantOptions}
+          options={restaurantOptionsByCity}
           placeholder='ex : Lunch Options'
           storeSelectedValues={storeSelectedValues}
         />
