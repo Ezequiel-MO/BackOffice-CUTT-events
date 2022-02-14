@@ -11,7 +11,7 @@ export const checkForDuplicates = (string, array) => {
 };
 
 export const checkCodeIsUnique = (code, array) => {
-  const codeArr = array?.map((project) => project[code]);
+  const codeArr = array?.map((project) => project["code"]);
   const codeIsUnique = checkForDuplicates(code, codeArr);
   return codeIsUnique;
 };

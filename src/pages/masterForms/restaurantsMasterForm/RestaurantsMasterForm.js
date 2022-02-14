@@ -1,6 +1,7 @@
 import * as Yup from "yup";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Form, Formik } from "formik";
+import { Alert } from "@mui/material";
 import { SaveButton } from "../../../ui/buttons/saveButton/SaveButton";
 import { Icon } from "@iconify/react";
 import { TextInput } from "../../../ui/inputs/TextInput";
@@ -12,6 +13,7 @@ import useGetVendors from "../../../hooks/useGetVendors";
 
 export const RestaurantsMasterForm = () => {
   const fileInput = useRef();
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
   const { vendorOptions: restaurants } = useGetVendors("restaurants");
   return (
@@ -33,8 +35,7 @@ export const RestaurantsMasterForm = () => {
             "restaurants",
             restaurants
           );
-          alert("Thanks for creating a new restaurant!");
-          navigate("/");
+          setSuccess(true);
         }}
         validationSchema={Yup.object({
           name: Yup.string().required("Required"),
@@ -48,6 +49,16 @@ export const RestaurantsMasterForm = () => {
       >
         {(formik) => (
           <Form className='form'>
+            {success && (
+              <Alert
+                severity='success'
+                onClose={() => {
+                  navigate("/");
+                }}
+              >
+                Thanks for creating a new restaurant!
+              </Alert>
+            )}
             <fieldset>
               <legend>
                 <h4>General Restaurant data</h4>

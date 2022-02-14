@@ -24,13 +24,13 @@ export const Hotels = () => {
 
   useEffect(() => {
     if (city && hotelOptions) {
-      const hotelOptionsByCity = hotelOptions.filter(
+      const hotelFilteredOptions = hotelOptions.filter(
         (hotel) => hotel.city === city
       );
-      setHotelOptionsByCity(hotelOptionsByCity);
+      setHotelOptionsByCity(hotelFilteredOptions);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [city]);
+  }, [city, hotelOptions]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();

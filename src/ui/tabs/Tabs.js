@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Alert, Button } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import HotelRatesTable from "../../components/projectConfig/HotelRatesTable/HotelRatesTable";
@@ -13,6 +14,7 @@ const Tabs = ({ hotels }) => {
   const [visibleTab, setVisibleTab] = useState(hotels[0]._id);
   const hotelsArr = useSelector(selectHotelRates);
   const [filteredHotels, setFilteredHotels] = useState(hotels);
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
   const projectStatus = useSelector(selectProjectStatus);
   const {
@@ -22,8 +24,7 @@ const Tabs = ({ hotels }) => {
   const postToHotels = async () => {
     try {
       await baseAPI.post(`/addHotels/${projectByCode._id}`, hotelsArr);
-      alert("Thanks for adding hotels");
-      navigate("/morning-events");
+      setSuccess(true);
     } catch (error) {
       alert(error.message);
     }
@@ -76,6 +77,12 @@ const Tabs = ({ hotels }) => {
 
   return (
     <div className='tabs'>
+      {success && (
+        <Alert severity='success' onClose={() => navigate("/morning-events")}>
+          Hotels added successfully
+        </Alert>
+      )}
+
       <ul className='tabs-titles'>{listTitles}</ul>
       <div className='tab-content'>{listContent}</div>
     </div>

@@ -35,6 +35,7 @@ import {
 const useScheduleProjectForm = () => {
   const navigate = useNavigate();
   const [showSubMenu, setShowSubMenu] = useState(false);
+  const [alertStatus, setAlertStatus] = useState("");
   const [selectedOptions, dispatch] = useReducer(
     eventOptionsReducer,
     optionsInitialState
@@ -236,10 +237,7 @@ const useScheduleProjectForm = () => {
   useEffect(() => {
     if (post) {
       PostToEndpoint(schedule, `${baseURL}/addSchedule/${projectByCode._id}`);
-      alert("Schedule has been successfully added");
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
+      setAlertStatus("schedule-added");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post]);
@@ -247,14 +245,9 @@ const useScheduleProjectForm = () => {
   useEffect(() => {
     if (evaluate === true) {
       if (dayCounter < totalDays) {
-        alert(
-          "You have added all the events for today. Please proceed to the next day"
-        );
+        setAlertStatus("today-events");
         dispatch_dayCounter(INCREMENT());
         setEvaluate(false);
-        setTimeout(() => {
-          navigate("/morning-events");
-        }, 1000);
       } else if (dayCounter === totalDays) {
         setTimeout(() => {
           navigate("/transfers-in");
@@ -270,6 +263,7 @@ const useScheduleProjectForm = () => {
   };
 
   return {
+    alertStatus,
     handleSubmit,
     projectByCode,
     eventOptionsByCity,

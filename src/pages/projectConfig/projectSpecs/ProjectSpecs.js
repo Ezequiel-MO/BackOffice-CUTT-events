@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -12,14 +13,15 @@ import {
   SET_PROJECT_STATUS,
 } from "../../../features/ProjectStatusSlice";
 import "./styles.css";
+import { Alert } from "@mui/material";
 
 export const ProjectSpecs = () => {
   const dispatch_ProjectStatus = useDispatch();
-
   const navigate = useNavigate();
   const {
     data: { projects: DBprojects },
   } = useAxiosFetch(`${baseURL}/projects`);
+  const [alertStatus, setAlertStatus] = useState("");
 
   const PostProject = (project) => {
     const formData = new FormData();
@@ -32,7 +34,7 @@ export const ProjectSpecs = () => {
       .catch((err) => console.log(err));
     dispatch_ProjectStatus(SET_PROJECT_STATUS(project["code"]));
     dispatch_ProjectStatus(SET_CITY(project["groupLocation"]));
-    navigate("/hotels");
+    setAlertStatus("success");
   };
 
   return (
@@ -50,12 +52,11 @@ export const ProjectSpecs = () => {
           clientAccManager: "",
         }}
         onSubmit={(values) => {
-          console.log("values=>", values);
           let codeIsUnique = checkCodeIsUnique(values.code, DBprojects);
           if (codeIsUnique) {
             PostProject(values);
           } else {
-            alert("This code is already in use");
+            setAlertStatus("error");
           }
         }}
         validationSchema={Yup.object({
@@ -74,6 +75,21 @@ export const ProjectSpecs = () => {
       >
         {(formik) => (
           <Form className='form'>
+            {alertStatus === "error" && (
+              <Alert severity='error'>
+                Code is not unique, please choose another one
+              </Alert>
+            )}
+            {alertStatus === "success" && (
+              <Alert
+                severity='success'
+                onClose={() => {
+                  navigate("/hotels");
+                }}
+              >
+                Project created successfully!
+              </Alert>
+            )}
             <fieldset>
               <legend>
                 <h4>About the Project</h4>

@@ -3,9 +3,13 @@ import styles from "../configStyles.module.css";
 import ProjectSelector from "../../../ui/Select/ProjectSelector";
 import SaveButton from "../../../ui/buttons/saveButton/SaveButton";
 import SelectTransfers from "../../../components/selectTransfers/SelectTransfers";
+import { Alert } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export const Dinners = () => {
+  const navigate = useNavigate();
   const {
+    alertStatus,
     handleSubmit,
     restaurantOptionsByCity,
     transferOptions,
@@ -15,6 +19,16 @@ export const Dinners = () => {
   } = useScheduleProjectForm();
   return (
     <div>
+      {alertStatus === "today-events" && (
+        <Alert
+          severity='info'
+          onClose={() => {
+            navigate("/morning-events");
+          }}
+        >
+          You have added all the events for today. Proceed to the next day.
+        </Alert>
+      )}
       <div className={styles.config__container}>
         <form onSubmit={handleSubmit}>
           <ProjectSelector

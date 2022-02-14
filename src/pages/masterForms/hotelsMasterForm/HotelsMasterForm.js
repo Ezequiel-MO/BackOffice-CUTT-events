@@ -1,8 +1,9 @@
 import * as Yup from "yup";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Form, Formik } from "formik";
 import { SaveButton } from "../../../ui/buttons/saveButton/SaveButton";
 import { Icon } from "@iconify/react";
+import { Alert } from "@mui/material";
 import { TextInput } from "../../../ui/inputs/TextInput";
 import { CheckboxInput } from "../../../ui/inputs/CheckboxInput";
 import { TextAreaInput } from "../../../ui/inputs/TextAreaInput";
@@ -15,6 +16,7 @@ export const HotelsMasterForm = () => {
   const fileInput = useRef();
   const navigate = useNavigate();
   const { vendorOptions: hotels } = useGetVendors("hotels");
+  const [success, setSuccess] = useState(false);
 
   return (
     <>
@@ -38,8 +40,7 @@ export const HotelsMasterForm = () => {
         }}
         onSubmit={(values) => {
           submitForm(values, fileInput.current.files, "hotels", hotels);
-          alert("Thanks for creating a new hotel!");
-          navigate("/");
+          setSuccess(true);
         }}
         validationSchema={Yup.object({
           name: Yup.string().required("Required"),
@@ -61,6 +62,16 @@ export const HotelsMasterForm = () => {
       >
         {(formik) => (
           <Form className='form'>
+            {success && (
+              <Alert
+                severity='success'
+                onClose={() => {
+                  navigate("/");
+                }}
+              >
+                Thanks for creating a new hotel!
+              </Alert>
+            )}
             <fieldset>
               <legend>
                 <h4>General Hotel data</h4>

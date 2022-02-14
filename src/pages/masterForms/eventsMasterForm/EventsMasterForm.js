@@ -1,6 +1,7 @@
 import * as Yup from "yup";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Form, Formik } from "formik";
+import { Alert } from "@mui/material";
 import { SaveButton } from "../../../ui/buttons/saveButton/SaveButton";
 import { Icon } from "@iconify/react";
 import { TextInput } from "../../../ui/inputs/TextInput";
@@ -13,6 +14,7 @@ import useGetVendors from "../../../hooks/useGetVendors";
 export const EventsMasterForm = () => {
   const fileInput = useRef();
   const navigate = useNavigate();
+  const [success, setSuccess] = useState(false);
   const { vendorOptions: events } = useGetVendors("events");
   return (
     <>
@@ -30,8 +32,7 @@ export const EventsMasterForm = () => {
         }}
         onSubmit={(values) => {
           submitForm(values, fileInput.current.files, "events", events);
-          alert("Thanks for creating a new event!");
-          navigate("/");
+          setSuccess(true);
         }}
         validationSchema={Yup.object({
           name: Yup.string().required("Required"),
@@ -47,6 +48,16 @@ export const EventsMasterForm = () => {
       >
         {(formik) => (
           <Form className='form'>
+            {success && (
+              <Alert
+                severity='success'
+                onClose={() => {
+                  navigate("/");
+                }}
+              >
+                Thanks for creating a new event!
+              </Alert>
+            )}
             <fieldset>
               <legend>
                 <h4>General Event data</h4>
