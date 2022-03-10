@@ -8,6 +8,7 @@ import {
   SET_PROJECT_STATUS,
 } from "../../features/ProjectStatusSlice";
 import ListOfProjects from "../listOfProjects/ListOfProjects";
+import { Button } from "@mui/material";
 
 const Header = () => {
   const dispatch_projectStatus = useDispatch();
@@ -24,8 +25,8 @@ const Header = () => {
     <>
       <div className={styles.header}>
         <div className={styles.header__left}>
-          <Link to='/'>
-            <img src={logo} alt='logo' onClick={handleImageClick} />
+          <Link to="/">
+            <img src={logo} alt="logo" onClick={handleImageClick} />
           </Link>
           <button
             className={styles.header__button}
@@ -45,8 +46,10 @@ const Header = () => {
           </button>
         </div>
         <div className={styles.header__right}>
-          <Link to='/login'>
-            <Icon icon='whh:avatar' color='#ea5933' width='48' />
+          <Button color="primary">Log In</Button>
+          <Button variant="outlined">Sign Up</Button>
+          <Link to="/login">
+            <Icon icon="whh:avatar" color="#ea5933" width="48" />
           </Link>
         </div>
       </div>
