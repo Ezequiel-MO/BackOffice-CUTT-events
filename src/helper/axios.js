@@ -8,4 +8,8 @@ export const baseAPI = axios.create({
   },
 });
 
-export const baseURL = "https://cutt-events.herokuapp.com";
+export const newBaseAPI = axios.create({
+  baseURL: "http://localhost:8000",
+});
+
+export const baseURL = "http://localhost:8000";

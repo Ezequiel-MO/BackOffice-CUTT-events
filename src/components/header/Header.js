@@ -46,11 +46,13 @@ const Header = () => {
           </button>
         </div>
         <div className={styles.header__right}>
-          <Button color="primary">Log In</Button>
-          <Button variant="outlined">Sign Up</Button>
           <Link to="/login">
-            <Icon icon="whh:avatar" color="#ea5933" width="48" />
+            <Button variant="outlined" color="primary">
+              Log In
+            </Button>
           </Link>
+
+          <Icon icon="whh:avatar" color="#ea5933" width="48" />
         </div>
       </div>
       {projectStatus === "searching-project" && <ListOfProjects />}
