@@ -4,6 +4,7 @@ import hotelRatesReducer from "../features/HotelRatesSlice";
 import transfersReducer from "../features/TransfersSlice";
 import dayCounterReducer from "../features/DayCounterSlice";
 import scheduleReducer from "../features/ScheduleSlice";
+import userLoggedInReducer from "../features/UserLoggedInSlice";
 
 export default configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export default configureStore({
     transfers: transfersReducer,
     dayCounter: dayCounterReducer,
     schedule: scheduleReducer,
+    userIsLoggedIn: userLoggedInReducer,
   },
 });

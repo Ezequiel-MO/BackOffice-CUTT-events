@@ -2,8 +2,11 @@ import { useState } from "react";
 import DashboardButton from "../../ui/buttons/dashboardButton/DashboardButton";
 import ListOfProjects from "../../components/listOfProjects/ListOfProjects";
 import styles from "./DashboardStyles.module.css";
+import { useSelector } from "react-redux";
+import { selectUserIsLoggedIn } from "../../features/UserLoggedInSlice";
 
 const Dashboard = () => {
+  const userIsLoggedIn = useSelector(selectUserIsLoggedIn);
   const [{ createVendor, seeListOfProjects }, setStatus] = useState({
     createVendor: false,
     seeListOfProjects: false,
@@ -30,12 +33,17 @@ const Dashboard = () => {
       slug: "/restaurants-master-form",
     },
   ];
+
+  if (!userIsLoggedIn) {
+    return <h1>Please log in to access the modules</h1>;
+  }
+
   return (
     <div className={styles.dashboard__container}>
       <DashboardButton
-        icon='akar-icons:key'
-        cat='dashboard-main'
-        title='Create/Maintain Vendor'
+        icon="akar-icons:key"
+        cat="dashboard-main"
+        title="Create/Maintain Vendor"
         setStatus={setStatus}
       />
       {createVendor && (
@@ -43,7 +51,7 @@ const Dashboard = () => {
           {dashboardData.map((item) => (
             <DashboardButton
               key={item.icon}
-              cat='dashboard-vendor'
+              cat="dashboard-vendor"
               icon={item.icon}
               title={item.title}
               slug={item.slug}
@@ -52,9 +60,9 @@ const Dashboard = () => {
         </div>
       )}
       <DashboardButton
-        icon='ph:projector-screen-chart-light'
-        cat='dashboard-main'
-        title='See List of Projects'
+        icon="ph:projector-screen-chart-light"
+        cat="dashboard-main"
+        title="See List of Projects"
         setStatus={setStatus}
       />
       {seeListOfProjects && <ListOfProjects page />}

@@ -1,9 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
 import "./loginStyles.css";
-import { newBaseAPI } from "../../helper/axios";
+import { useDispatch } from "react-redux";
+import { LOGIN } from "../../features/UserLoggedInSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -27,7 +31,11 @@ const Login = () => {
           password: data.password,
         },
       });
-      console.log("res=>", res);
+      if (res.data.status === "success") {
+        dispatch(LOGIN());
+        console.log(res);
+        setTimeout(() => navigate("/"), 1000);
+      }
     } catch (err) {
       console.log(err.response.data);
     }

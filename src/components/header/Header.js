@@ -1,4 +1,6 @@
 import logo from "../../assets/logo-dark.svg";
+import { useState } from "react";
+import user from "../../assets/users/user-2.jpg";
 import { Icon } from "@iconify/react";
 import styles from "./Header.module.css";
 import { Link } from "react-router-dom";
@@ -9,16 +11,18 @@ import {
 } from "../../features/ProjectStatusSlice";
 import ListOfProjects from "../listOfProjects/ListOfProjects";
 import { Button } from "@mui/material";
+import { LOGOUT, selectUserIsLoggedIn } from "../../features/UserLoggedInSlice";
 
 const Header = () => {
-  const dispatch_projectStatus = useDispatch();
+  const dispatch = useDispatch();
+  const userIsLoggedIn = useSelector(selectUserIsLoggedIn);
   const projectStatus = useSelector(selectProjectStatus);
   const handleOpenModalClick = () => {
-    dispatch_projectStatus(SET_PROJECT_STATUS("searching-project"));
+    dispatch(SET_PROJECT_STATUS("searching-project"));
   };
 
   const handleImageClick = () => {
-    dispatch_projectStatus(SET_PROJECT_STATUS("initial"));
+    dispatch(SET_PROJECT_STATUS("initial"));
   };
 
   return (
@@ -28,31 +32,47 @@ const Header = () => {
           <Link to="/">
             <img src={logo} alt="logo" onClick={handleImageClick} />
           </Link>
-          <button
-            className={styles.header__button}
-            onClick={handleOpenModalClick}
-            disabled={
-              projectStatus === "searching-project" ||
-              projectStatus === "creating-project"
-            }
-          >
-            {projectStatus === "initial"
-              ? "Create Project"
-              : projectStatus === "searching-project"
-              ? "Searching Project"
-              : projectStatus === "creating-project"
-              ? "Creating Project"
-              : `${projectStatus}`}
-          </button>
+
+          {userIsLoggedIn ? (
+            <button
+              className={styles.header__button}
+              onClick={handleOpenModalClick}
+              disabled={
+                projectStatus === "searching-project" ||
+                projectStatus === "creating-project"
+              }
+            >
+              {projectStatus === "initial"
+                ? "Create Project"
+                : projectStatus === "searching-project"
+                ? "Searching Project"
+                : projectStatus === "creating-project"
+                ? "Creating Project"
+                : `${projectStatus}`}
+            </button>
+          ) : null}
         </div>
         <div className={styles.header__right}>
-          <Link to="/login">
-            <Button variant="outlined" color="primary">
-              Log In
+          {userIsLoggedIn ? (
+            <Button
+              onClick={() => dispatch(LOGOUT())}
+              variant="outlined"
+              color="primary"
+            >
+              Log Out
             </Button>
-          </Link>
-
-          <Icon icon="whh:avatar" color="#ea5933" width="48" />
+          ) : (
+            <Link to="/login">
+              <Button variant="outlined" color="primary">
+                Log In
+              </Button>
+            </Link>
+          )}
+          {userIsLoggedIn ? (
+            <img src={user} alt="user" />
+          ) : (
+            <Icon icon="whh:avatar" color="#ea5933" width="48" />
+          )}
         </div>
       </div>
       {projectStatus === "searching-project" && <ListOfProjects />}
