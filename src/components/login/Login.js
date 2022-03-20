@@ -25,15 +25,15 @@ const Login = () => {
     try {
       const res = await axios({
         method: "POST",
-        url: "http://localhost:3000/v1/users/login",
+        url: "https://cuttevents.herokuapp.com/v1/users/login",
         data: {
           email: data.email,
           password: data.password,
         },
       });
       if (res.data.status === "success") {
-        dispatch(LOGIN());
-        console.log(res);
+        dispatch(LOGIN(res.data));
+        console.log(res.data.data.user);
         setTimeout(() => navigate("/"), 1000);
       }
     } catch (err) {

@@ -1,6 +1,4 @@
 import logo from "../../assets/logo-dark.svg";
-import { useState } from "react";
-import user from "../../assets/users/user-2.jpg";
 import { Icon } from "@iconify/react";
 import styles from "./Header.module.css";
 import { Link } from "react-router-dom";
@@ -10,7 +8,7 @@ import {
   SET_PROJECT_STATUS,
 } from "../../features/ProjectStatusSlice";
 import ListOfProjects from "../listOfProjects/ListOfProjects";
-import { Button } from "@mui/material";
+import { Avatar, Button } from "@mui/material";
 import { LOGOUT, selectUserIsLoggedIn } from "../../features/UserLoggedInSlice";
 
 const Header = () => {
@@ -69,7 +67,10 @@ const Header = () => {
             </Link>
           )}
           {userIsLoggedIn ? (
-            <img src={user} alt="user" />
+            <Avatar
+              src={`/img/users/${userIsLoggedIn.photo}`}
+              alt={`photo of ${userIsLoggedIn.name}`}
+            />
           ) : (
             <Icon icon="whh:avatar" color="#ea5933" width="48" />
           )}
