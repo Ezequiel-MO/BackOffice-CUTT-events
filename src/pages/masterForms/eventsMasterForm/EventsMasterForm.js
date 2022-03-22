@@ -7,23 +7,68 @@ import { Icon } from "@iconify/react";
 import { TextInput } from "../../../ui/inputs/TextInput";
 import { TextAreaInput } from "../../../ui/inputs/TextAreaInput";
 import "../../masterForms/styles.css";
-import { submitForm } from "../../../helper/HelperFunctions/HelperFunctions";
 import { useNavigate } from "react-router-dom";
-import useGetVendors from "../../../hooks/useGetVendors";
+import axios from "axios";
+import { newBaseURL } from "../../../helper/axios";
+import { selectUserIsLoggedIn } from "../../../features/UserLoggedInSlice";
+import { useSelector } from "react-redux";
 
 export const EventsMasterForm = () => {
+  const userIsLoggedIn = useSelector(selectUserIsLoggedIn);
   const fileInput = useRef();
   const navigate = useNavigate();
   const [success, setSuccess] = useState(false);
-  const { vendorOptions: events } = useGetVendors("events");
+
+  const PostToEndpoint = async (data, endpoint) => {
+    try {
+      const response = await axios.post(`${newBaseURL}v1/${endpoint}`, data, {
+        headers: {
+          Authorization: `Bearer ${userIsLoggedIn.token}`,
+        },
+      });
+      setSuccess(true);
+      console.log("response", response);
+    } catch (err) {
+      console.log("this is the error", err);
+    }
+  };
+
+  const fillFormData = (values, files) => {
+    let formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("city", values.city);
+    formData.append("price", values.price);
+    formData.append("textContent", values.textContent);
+    formData.append("introduction", values.introduction);
+    formData.append("location[coordinates][0]", values.latitude);
+    formData.append("location[coordinates][1]", values.longitude);
+
+    for (let i = 0; i < files.length; i++) {
+      formData.append("imageContentUrl", files[i]);
+    }
+    return formData;
+  };
+
+  const transformValues = (valuesObj) => {
+    const transformedValues = { ...valuesObj };
+    transformedValues.textContent = JSON.stringify(valuesObj.textContent);
+    transformedValues.introduction = JSON.stringify(valuesObj.introduction);
+
+    return transformedValues;
+  };
+
+  const submitForm = (values, files, endpoint) => {
+    const transformedValues = transformValues(values);
+    const dataToPost = fillFormData(transformedValues, files);
+    PostToEndpoint(dataToPost, endpoint);
+  };
+
   return (
     <>
       <Formik
         initialValues={{
           name: "",
           city: "",
-          titleSidebar: "",
-          title: "",
           price: "",
           longitude: "",
           latitude: "",
@@ -31,14 +76,11 @@ export const EventsMasterForm = () => {
           introduction: "",
         }}
         onSubmit={(values) => {
-          submitForm(values, fileInput.current.files, "events", events);
-          setSuccess(true);
+          submitForm(values, fileInput.current.files, "events");
         }}
         validationSchema={Yup.object({
           name: Yup.string().required("Required"),
           city: Yup.string().required("Required"),
-          titleSidebar: Yup.string().required("Required"),
-          title: Yup.string().required("Required"),
           longitude: Yup.number().required("Required"),
           latitude: Yup.number().required("Required"),
           price: Yup.number().required("Required"),
@@ -47,10 +89,10 @@ export const EventsMasterForm = () => {
         })}
       >
         {(formik) => (
-          <Form className='form'>
+          <Form className="form">
             {success && (
               <Alert
-                severity='success'
+                severity="success"
                 onClose={() => {
                   navigate("/");
                 }}
@@ -62,94 +104,78 @@ export const EventsMasterForm = () => {
               <legend>
                 <h4>General Event data</h4>
               </legend>
-              <div className='form-inputs'>
+              <div className="form-inputs">
                 <div>
                   <TextInput
-                    label='Name'
-                    name='name'
-                    placeholder='Name of Activity'
-                    type='text'
+                    label="Name"
+                    name="name"
+                    placeholder="Name of Activity"
+                    type="text"
                   />
                 </div>
                 <div>
                   <TextInput
-                    label='City'
-                    name='city'
-                    placeholder='Event City'
-                    type='text'
+                    label="City"
+                    name="city"
+                    placeholder="Event City"
+                    type="text"
                   />
                 </div>
                 <div>
                   <TextInput
-                    label='Title Sidebar'
-                    name='titleSidebar'
-                    placeholder='Activity name'
-                    type='text'
+                    label="Coords Longitude"
+                    name="longitude"
+                    placeholder="ex : 2.154007"
+                    type="number"
                   />
                 </div>
                 <div>
                   <TextInput
-                    label='Title'
-                    name='title'
-                    placeholder='Activity title'
-                    type='text'
+                    label="Coords Latitude"
+                    name="latitude"
+                    placeholder="ex : 41.390205"
+                    type="number"
                   />
                 </div>
                 <div>
                   <TextInput
-                    label='Coords Longitude'
-                    name='longitude'
-                    placeholder='ex : 2.154007'
-                    type='number'
+                    label="Activity Cost"
+                    name="price"
+                    placeholder="ex : 35"
+                    type="number"
                   />
                 </div>
-                <div>
-                  <TextInput
-                    label='Coords Latitude'
-                    name='latitude'
-                    placeholder='ex : 41.390205'
-                    type='number'
-                  />
-                </div>
-                <div>
-                  <TextInput
-                    label='Activity Cost'
-                    name='price'
-                    placeholder='ex : 35'
-                    type='number'
-                  />
-                </div>
-                <div className='button'>
-                  <SaveButton type='submit' text='Save and continue' />
+                <div className="button">
+                  <SaveButton type="submit" text="Save and continue" />
                 </div>
               </div>
-              <div className='form-inputs'>
+              <div className="form-inputs">
                 <div>
                   <TextAreaInput
-                    className='text-area-input-event'
-                    name='introduction'
-                    placeholder='Write an intro'
-                    type='text'
+                    className="text-area-input-event"
+                    name="introduction"
+                    placeholder="Write an intro"
+                    type="text"
                   />
                 </div>
                 <div>
                   <TextAreaInput
-                    className='text-area-input-event'
-                    name='textContent'
-                    placeholder='Write a description'
-                    type='text'
+                    className="text-area-input-event"
+                    name="textContent"
+                    placeholder="Write a description"
+                    type="text"
                   />
                 </div>
                 <div>
-                  <label htmlFor='file-upload' className='custom-file-upload'>
-                    <Icon icon='akar-icons:cloud-upload' width='40' />
+                  <label htmlFor="file-upload" className="custom-file-upload">
+                    <Icon icon="akar-icons:cloud-upload" width="40" />
                     <span>Upload Images</span>
                   </label>
                   <input
-                    id='file-upload'
-                    type='file'
+                    id="file-upload"
+                    type="file"
                     ref={fileInput}
-                    name='imageContentUrl'
+                    name="imageContentUrl"
                     multiple
                   />
                 </div>

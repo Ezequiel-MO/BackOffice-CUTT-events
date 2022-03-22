@@ -35,10 +35,12 @@ export const transformValues = (valuesObj) => {
   const transformedValues = { ...valuesObj };
   transformedValues.textContent = JSON.stringify(valuesObj.textContent);
   transformedValues.introduction = JSON.stringify(valuesObj.introduction);
-  transformedValues.coordinates = JSON.stringify([
-    valuesObj.latitude,
-    valuesObj.longitude,
-  ]);
+  transformedValues.location = JSON.stringify({
+    type: "Point",
+    coordinates: [valuesObj.latitude, valuesObj.longitude],
+    address: "",
+    description: "",
+  });
   delete transformedValues.latitude;
   delete transformedValues.longitude;
 
@@ -51,7 +53,7 @@ export const fillFormData = (values, files) => {
     formData.append(key, values[key]);
   }
   for (let i = 0; i < files.length; i++) {
-    formData.append("images", files[i]);
+    formData.append("imageContentUrl", files[i]);
   }
   return formData;
 };
@@ -71,18 +73,10 @@ export const PostToEndpoint = async (data, endpoint) => {
   }
 };
 
-export const submitForm = (values, files, endpoint, options) => {
+export const submitForm = (values, files, endpoint) => {
   const transformedValues = transformValues(values);
   const dataToPost = fillFormData(transformedValues, files);
-  if (options) {
-    let hotelIsUnique = checkVendorIsUnique("name", values["name"], options);
-
-    if (hotelIsUnique) {
-      PostToEndpoint(dataToPost, endpoint);
-    } else {
-      alert(`${values["name"]} already exists in the DB`);
-    }
-  }
+  PostToEndpoint(dataToPost, endpoint);
 };
 
 //ListOfProjects - SortableProjectsTable

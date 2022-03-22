@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { selectUserIsLoggedIn } from "../features/UserLoggedInSlice";
 
 export const useAxiosFetch = (dataURL) => {
   const [data, setData] = useState([]);
   const [fetchError, setFetchError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const userIsLoggedIn = useSelector(selectUserIsLoggedIn);
 
   useEffect(() => {
     let isMounted = true;
@@ -16,12 +19,11 @@ export const useAxiosFetch = (dataURL) => {
         const response = await axios.get(url, {
           cancelToken: source.token,
           headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MTdkMjgxMTY5NTA2ZjhkOTkzNDg0YzMiLCJpYXQiOjE2Mzc2NTU1MTIsImV4cCI6MTYzNzc0MTkxMn0.XwcnyoeHwrtiZxmy1I1xlqRA3wOn-NJsN4ag13qAGLM",
+            Authorization: `Bearer ${userIsLoggedIn.token}`,
           },
         });
         if (isMounted) {
-          setData(response.data);
+          setData(response.data.data.data);
           setFetchError(null);
         }
       } catch (err) {

@@ -1,11 +1,12 @@
 import { useAxiosFetch } from "./useAxiosFetch";
 import { useEffect, useState } from "react";
-import { baseURL } from "../helper/axios";
+import { newBaseURL } from "../helper/axios";
 
 const useGetVendors = (typeOfVendor) => {
   const [vendorOptions, setVendorOptions] = useState();
 
-  const { data } = useAxiosFetch(`${baseURL}/${typeOfVendor}`);
+  const { data } = useAxiosFetch(`${newBaseURL}/${typeOfVendor}`);
+  console.log("data at useGet vendors", data);
 
   useEffect(() => {
     const vendorOptionData = data[typeOfVendor];
